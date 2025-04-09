@@ -6,6 +6,7 @@
 @section('og_url', url()->current())
 
 @section('content')
+@livewire('search-property')
 <div class="container py-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h4 class="mb-0">My Posted Properties</h4>

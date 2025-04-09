@@ -75,11 +75,7 @@ class PropertyController extends Controller
      */
     public function create()
     {
-        $cities = City::all();
-        $propertyTypes = ['Residential Plot', 'House', 'Apartment', 'Villa', 'Office', 'Shop', 'Commercial Plot', 'Industrial Land', 'Agriculture Land'];
-        $listingTypes = ['Sale', 'Rent', 'Lease', 'Collaborate'];
-
-        return view('properties.create', compact('cities', 'propertyTypes', 'listingTypes'));
+        return view('properties.create'); // <- This Blade view will call the Livewire component
     }
 
     /**

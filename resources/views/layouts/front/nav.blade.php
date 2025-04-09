@@ -30,7 +30,7 @@
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Property</a>
                             <div class="dropdown-menu rounded-0 m-0">
-                                <a href="{{ route('properties.indexall') }}" class="dropdown-item">PropertyList</a>
+                                <a href="{{ route('customer.properties.index') }}" class="dropdown-item">PropertyList</a>
                                 <a href="property-type.html" class="dropdown-item">Property Type</a>
                                 <a href="property-agent.html" class="dropdown-item">Broker</a>
                             </div>

@@ -18,7 +18,7 @@
             <span class="badge bg-secondary">{{ $property->listing_type }}</span>
         </div>
         <div class="col-lg-4 text-lg-end mt-3 mt-lg-0">
-            <h4 class="text-success">₹ {{ number_format($property->price) }}</h4>
+            <h4 class="text-success">₹ {{ number_format($property->price) }} {{$property->price_in}}</h4>
         </div>
     </div>
 
