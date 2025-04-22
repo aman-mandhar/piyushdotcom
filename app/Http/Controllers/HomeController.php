@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Property;
-use App\Models\city;
+use App\Models\City;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -11,7 +11,7 @@ class HomeController extends Controller
     public function index()
     {
         $properties = Property::all();
-        $cities = city::all();
+        $cities = City::all();
         return view('home', compact('properties', 'cities'));
     }
 
