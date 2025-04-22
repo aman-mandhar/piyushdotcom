@@ -16,7 +16,7 @@
       <!-- Sidebar user panel -->
       <div class="user-panel">
         <div class="pull-left image">
-          <img src="{{ asset('storage/' . $picture) }}" class="user-image" alt="User Image"/>
+          <img src="{{ $picture }}" class="user-image" alt="User Image" />
           <span class="hidden-xs">{{ Auth::user()->name }}</span>
         </div>
         <div class="pull-left info">

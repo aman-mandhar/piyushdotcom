@@ -24,7 +24,7 @@
             <!-- User Account: style can be found in dropdown.less -->
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <img src="{{ asset('storage/' . $picture) }}" class="user-image" alt="User Image"/>
+              <img src="{{ $picture }}" class="user-image" alt="User Image" />
               <span class="hidden-xs">{{$current->name}}</span>
             </a>
             <ul class="dropdown-menu">
