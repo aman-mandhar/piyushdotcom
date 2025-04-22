@@ -30,7 +30,7 @@
             <ul class="dropdown-menu">
               <!-- User image -->
               <li class="user-header">
-                <img src="{{ asset('storage/' . $picture) }}" class="img-circle" alt="User Image" />
+                <img src="{{ $picture }}" class="user-image" alt="User Image" />
                 <p>
                   {{$current->name}}
                   <small>Joined on : {{$current->created_at}}</small>
