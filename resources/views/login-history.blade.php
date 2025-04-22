@@ -33,7 +33,7 @@
                                             <td>{{ $key + 1 }}</td>
                                             <td>{{ $log->user_id }}</td>
                                             <td>
-                                                @if($profile->profile_picture)
+                                                @if($profile && $profile->profile_picture)
                                                     <img src="{{ asset('storage/' . $profile->profile_picture) }}" width="50">
                                                 @else
                                                     <span class="text-danger">No Image</span>
