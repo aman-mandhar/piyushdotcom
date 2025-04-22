@@ -11,13 +11,15 @@ class UserLoginLogController extends Controller
 {
     public function index()
     {
-        $logs = UserLoginLog::all()->orderBy('id', 'desc')->get();
+        $logs = UserLoginLog::orderBy('id', 'desc')->get();
         return view('login-history', compact('logs'));
     }
-
+    
     public function myIndex()
     {
-        $logs = UserLoginLog::where('user_id', Auth::id())->orderBy('id', 'desc')->get();
+        $logs = UserLoginLog::where('user_id', Auth::id())
+            ->orderBy('id', 'desc')
+            ->get();
         return view('my-login-history', compact('logs'));
     }
 }
