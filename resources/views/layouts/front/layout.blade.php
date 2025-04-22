@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>@yield('title', 'Makaan - Real Estate Portal')</title>
+    <title>@yield('title', 'PiyushDotCom - Real Estate Portal')</title>
     <meta content="@yield('description', 'Find properties for sale, rent, lease, and collaboration in your city')" name="description">
     <meta content="@yield('keywords', 'property, real estate, rent, buy, house, plot, commercial')" name="keywords">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
