@@ -94,6 +94,7 @@ class Property extends Model
         'facing',
         'status',
         'user_id',
+        'video_link',
     ];
 
     protected $casts = [

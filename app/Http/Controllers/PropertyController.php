@@ -7,19 +7,22 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use App\Models\Property;
 use App\Models\City;
+use App\Models\Call;
+use App\Models\CallProgress;
+use App\Models\User;
 
 class PropertyController extends Controller
 {
     /**
      * Show all public properties (for search/buyers)
      */
-    public function indexAll()
+    public function myProperties()
     {
-        $properties = Property::with('city')->latest()->paginate(10);
+        $properties = Property::with('city', 'user')
+                    ->where('user_id', Auth::id())
+                    ->latest()->paginate(10);
         $cities = City::all();
-        $propertyTypes = ['Residential Plot', 'House', 'Apartment', 'Villa', 'Office', 'Shop', 'Commercial Plot', 'Industrial Land', 'Agriculture Land'];
-        $listingTypes = ['Sale', 'Rent', 'Lease', 'Collaborate'];
-        return view('properties.indexall', compact('properties', 'cities', 'propertyTypes', 'listingTypes'));
+        return view('properties.my-properties', compact('properties', 'cities'));
     }
 
     /**
@@ -27,7 +30,30 @@ class PropertyController extends Controller
      */
     public function show(Property $property)
     {
+        $property = Property::with(['city', 'user'])->where('slug', $property->slug)->firstOrFail();
         return view('properties.show', compact('property'));
+    }
+
+    /**
+     * Show all properties (public detail page)
+     */
+    public function showAll($id)
+    {
+        $callProgress = CallProgress::where('call_id', $id)->first(); // ✅ use `first()`, not `firstOrFail()`
+
+        if ($callProgress) {
+            return redirect()->back()->with('error', 'Call has already been made.');
+        }
+
+        // Forget session call
+        $call = session('call', []);
+        // Get New call
+        $call = Call::where('id', $id)->firstOrFail();
+        // Put call in session
+        session(['call' => $call]);
+        $property = Property::with(['city', 'user'])->where('id', $call->property_id)->firstOrFail();
+
+        return view('properties.show-all', compact('call', 'property'));
     }
 
     /**
@@ -37,6 +63,10 @@ class PropertyController extends Controller
     {
         $query = Property::query();
 
+        if ($request->filled('keyword')) {
+            $query->where('title', 'like', '%' . $request->keyword . '%');
+        }
+
         if ($request->filled('city_id')) {
             $query->where('city_id', $request->city_id);
         }
@@ -45,28 +75,19 @@ class PropertyController extends Controller
             $query->where('property_type', $request->property_type);
         }
 
-        if ($request->filled('listing_type')) {
-            $query->where('listing_type', $request->listing_type);
-        }
+        // Load related city data to prevent N+1 problem
+        $properties = $query->with('city')->latest()->paginate(10);
 
-        if ($request->filled('min_price')) {
-            $query->where('price', '>=', $request->min_price);
-        }
-
-        if ($request->filled('max_price')) {
-            $query->where('price', '<=', $request->max_price);
-        }
-
-        $properties = $query->latest()->paginate(10);
-        return view('properties.indexall', compact('properties'));
+        return view('properties.search', compact('properties'));
     }
+
 
     /**
      * Show customer's own posted properties
      */
-    public function indexCustomer()
+    public function index()
     {
-        $properties = Property::where('user_id', Auth::id())->latest()->paginate(10);
+        $properties = Property::all();
         return view('properties.index', compact('properties'));
     }
 
@@ -110,7 +131,7 @@ class PropertyController extends Controller
 
         Property::create($data);
 
-        return redirect()->route('customer.properties.index')->with('success', 'Property posted successfully!');
+        return redirect()->route('properties.index')->with('success', 'Property posted successfully!');
     }
 
     /**
@@ -118,15 +139,10 @@ class PropertyController extends Controller
      */
     public function edit(Property $property)
     {
-        if ($property->user_id !== Auth::id()) {
-            abort(403);
-        }
-
-        $cities = City::all();
-        $propertyTypes = ['Residential Plot', 'House', 'Apartment', 'Villa', 'Office', 'Shop', 'Commercial Plot', 'Industrial Land', 'Agriculture Land'];
-        $listingTypes = ['Sale', 'Rent', 'Lease', 'Collaborate'];
-
-        return view('properties.edit', compact('property', 'cities', 'propertyTypes', 'listingTypes'));
+        // Authorization check (optional)
+        abort_unless(auth()->id() === $property->user_id, 403);
+    
+        return view('properties.edit', compact('property'));
     }
 
     /**
@@ -162,7 +178,7 @@ class PropertyController extends Controller
 
         $property->update($data);
 
-        return redirect()->route('customer.properties.index')->with('success', 'Property updated successfully!');
+        return redirect()->route('properties.index')->with('success', 'Property updated successfully!');
     }
 
     /**
@@ -176,6 +192,8 @@ class PropertyController extends Controller
 
         $property->delete();
 
-        return redirect()->route('customer.properties.index')->with('success', 'Property deleted.');
+        return redirect()->route('properties.index')->with('success', 'Property deleted.');
     }
+
+    
 }

@@ -17,14 +17,9 @@ class DashboardController extends Controller
     return view('dashboards.customer');
 }
 
-    public function brokerDashboard()
+    public function employeeDashboard()
     {
-        return view('dashboards.broker');
-    }
-
-    public function houseDeveloperDashboard()
-    {
-        return view('dashboards.hd');
+        return view('dashboards.employee');
     }
 
     public function dashboard()
@@ -41,9 +36,7 @@ class DashboardController extends Controller
             case 2:
                 return redirect()->route('customer.dashboard');
             case 3:
-                return redirect()->route('broker.dashboard');
-            case 4:
-                return redirect()->route('developer.dashboard');
+                return redirect()->route('employee.dashboard');
             default:
                 Auth::logout();
                 return redirect()->route('login')->with('error', 'Invalid role! Logged out.');

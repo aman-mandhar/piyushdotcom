@@ -14,7 +14,7 @@ class CreateProperty extends Component
    // Common Fields 
     public $property_title, $slug;
     public $owner_name, $owner_contact, $owner_email, $owner_address, $owner_nationality, $owner_type, $owner_document_type;
-    public $property_address, $court_case, $court_case_details, $current_status, $listing_type, $property_type;
+    public $property_address, $court_case, $court_case_details, $current_status, $listing_type, $property_type, $video_link;
     // Dynamic Fields
     public $measurement_unit, $plot_type, $plot_number;
     public $plot_category, $plot_front, $plot_side_1, $plot_side_2, $plot_back, $plot_size, $price_per_sqft;
@@ -33,7 +33,7 @@ class CreateProperty extends Component
     public $cities, $property_types, $listing_types, $plot_categories, $furnishing_statuses, $directions, $prices_in;
     public function mount()
     {
-        $this->cities = City::all();
+        $this->cities = City::orderBy('name')->get();
         $this->property_types = [
             'Plot', 'House', 'Apartment', 'Villa', 'Office', 'Shop', 'Agriculture Land'
         ];
@@ -47,7 +47,7 @@ class CreateProperty extends Component
             'Furnished', 'Semi-Furnished', 'Unfurnished'
         ];
         $this->directions = [
-            'North', 'South', 'East', 'West'
+            'North', 'North-East', 'North-West', 'South', 'Soth-East', 'South-West', 'East', 'West'
         ];
 
         $this->prices_in = [
@@ -137,6 +137,7 @@ class CreateProperty extends Component
                 'facing' => 'nullable',
                 'image' => 'nullable|image|max:2048',
                 'description' => 'nullable|string|max:1000',
+                'video_link' => 'nullable|url|max:255',
                 
         ]);
 
@@ -144,7 +145,6 @@ class CreateProperty extends Component
         if ($this->property_type === 'Plot') {
             $this->validate([
                 'plot_category' => 'nullable',
-                'measurement_unit' => 'nullable',
                 'plot_type' => 'nullable',
                 'plot_number' => 'nullable|string|max:255',
                 'plot_front' => 'nullable|numeric',
@@ -180,7 +180,6 @@ class CreateProperty extends Component
         if ($this->property_type === 'Shop') {
             $this->validate([
                 'shop_type' => 'nullable',
-                'shop_area_size_unit' => 'nullable',
                 'shop_front' => 'nullable|numeric',
                 'shop_back' => 'nullable|numeric',
                 'shop_side_1' => 'nullable|numeric',
@@ -218,10 +217,11 @@ class CreateProperty extends Component
             'current_status' => $this->current_status,
             'listing_type' => $this->listing_type,
             'property_type' => $this->property_type,
+            'video_link' => $this->video_link,
             
             // Step 2 (optional dynamic fields)
             'plot_category' => $this->plot_category,
-            'measurement_unit' => $this->measurement_unit,
+            'measurement_unit' => "Square Feet",
             'plot_type' => $this->plot_type,
             'plot_number' => $this->plot_number,
             'plot_front' => $this->plot_front,
@@ -243,7 +243,7 @@ class CreateProperty extends Component
             'office_area_size' => $this->office_area_size,
             'office_furnishing_status' => $this->office_furnishing_status,
             'shop_type' => $this->shop_type,
-            'shop_area_size_unit' => $this->shop_area_size_unit,
+            'shop_area_size_unit' => "Square Feet",
             'shop_front' => $this->shop_front,
             'shop_back' => $this->shop_back,
             'shop_side_1' => $this->shop_side_1,
@@ -274,7 +274,7 @@ class CreateProperty extends Component
             ]);
 
         session()->flash('success', 'Property added successfully!');
-        return redirect()->route('customer.properties.index');
+        return redirect()->route('properties.index');
 
     }
 }

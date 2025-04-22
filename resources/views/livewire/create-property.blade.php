@@ -19,14 +19,14 @@
                         <!-- Row 1: Full width -->
                         <div class="col-12 mb-3">
                             <label class="form-label fw-semibold">Owner Name <span class="text-danger">*</span></label>
-                            <input type="text" wire:model="owner_name" placeholder="e.g. Aman Sharma" class="form-control">
+                            <input type="text" wire:model="owner_name" placeholder="e.g. Aman" class="form-control">
                             @error('owner_name') <small class="text-danger">{{ $message }}</small> @enderror
                         </div>
                 
                         <!-- Row 2 -->
                         <div class="col-md-6 mb-3">
                             <label class="form-label fw-semibold">Owner Contact <span class="text-danger">*</span></label>
-                            <input type="text" wire:model="owner_contact" placeholder="e.g. +91 9876543210" class="form-control">
+                            <input type="text" wire:model="owner_contact" placeholder="e.g. 9592306823" class="form-control">
                             @error('owner_contact') <small class="text-danger">{{ $message }}</small> @enderror
                         </div>
                         <div class="col-md-6 mb-3">
@@ -77,7 +77,7 @@
                         <!-- Property Title -->
                         <div class="col-md-6">
                             <label class="form-label fw-semibold">Property Title</label>
-                            <input type="text" wire:model="property_title" class="form-control shadow-sm" placeholder="Enter property title">
+                            <input type="text" wire:model="property_title" class="form-control shadow-sm" placeholder="e.g. 3 BHK Flat in XYZ Society">
                             @error('property_title') <small class="text-danger">{{ $message }}</small> @enderror
                         </div>
                     
@@ -90,7 +90,7 @@
                         <!--Court Case -->
                         <div class="col-md-4">
                             <label class="form-label fw-semibold">If any Court Case</label>
-                            <select wire:model="court_case" class="form-select shadow-sm">
+                            <select wire:model.lazy="court_case" class="form-select shadow-sm">
                                 <option value="">Select</option>
                                 <option value="Yes">Yes</option>
                                 <option value="No">No</option>
@@ -99,28 +99,43 @@
                         </div>
 
                         <!-- Case Details -->
-                        <div class="col-md-4">
-                            <label class="form-label fw-semibold">Court Case Details</label>
-                            <input type="text" wire:model="court_case_details" class="form-control shadow-sm">
-                            @error('court_case_details') <small class="text-danger">{{ $message }}</small> @enderror
-                        </div>
-
-                        <!-- Current Status 'Occupied','Vacant','Under Construction','Under Renovation','Under Dispute','Rented','Other' -->
-                        <div class="col-md-4">
-                            <label class="form-label fw-semibold">Current Status of Property</label>
-                            <select wire:model="current_status" class="form-select shadow-sm">
-                                <option value="">Select</option>
-                                <option value="Occupied">Occupied</option>
-                                <option value="Vacant">Vacant</option>
-                                <option value="Under Construction">Under Construction</option>
-                                <option value="Under Renovation">Under Renovation</option>
-                                <option value="Under Dispute">Under Dispute</option>
-                                <option value="Rented">Rented</option>
-                                <option value="Other">Other</option>
-                            </select>
-                            @error('current_status') <small class="text-danger">{{ $message }}</small> @enderror
-                        </div>
-                            
+                        @if($court_case === 'Yes')
+                            <div class="col-md-4">
+                                <label class="form-label fw-semibold">Court Case Details</label>
+                                <input type="text" wire:model="court_case_details" class="form-control shadow-sm" placeholder="e.g. Case No. 1234, Court Name">
+                                @error('court_case_details') <small class="text-danger">{{ $message }}</small> @enderror
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label fw-semibold">Current Status of Property</label>
+                                <select wire:model="current_status" class="form-select shadow-sm">
+                                    <option value="">Select</option>
+                                    <option value="Occupied">Occupied</option>
+                                    <option value="Vacant">Vacant</option>
+                                    <option value="Under Construction">Under Construction</option>
+                                    <option value="Under Renovation">Under Renovation</option>
+                                    <option value="Under Dispute">Under Dispute</option>
+                                    <option value="Rented">Rented</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                                @error('current_status') <small class="text-danger">{{ $message }}</small> @enderror
+                            </div>
+                        @else
+                            <!-- Current Status 'Occupied','Vacant','Under Construction','Under Renovation','Under Dispute','Rented','Other' -->
+                            <div class="col-md-4">
+                                <label class="form-label fw-semibold">Current Status of Property</label>
+                                <select wire:model="current_status" class="form-select shadow-sm">
+                                    <option value="">Select</option>
+                                    <option value="Occupied">Occupied</option>
+                                    <option value="Vacant">Vacant</option>
+                                    <option value="Under Construction">Under Construction</option>
+                                    <option value="Under Renovation">Under Renovation</option>
+                                    <option value="Under Dispute">Under Dispute</option>
+                                    <option value="Rented">Rented</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                                @error('current_status') <small class="text-danger">{{ $message }}</small> @enderror
+                            </div>
+                        @endif
                         <!-- Listing Type -->
                         <div class="col-md-6">
                             <label class="form-label fw-semibold">Listing Type</label>
@@ -158,7 +173,7 @@
                     <h5 class="mb-4 fw-bold text-secondary">🗺️ Plot Details</h5>
 
                         <div class="row g-3">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <label class="form-label fw-semibold">Plot Category</label>
                                 <select wire:model="plot_category" class="form-control">
                                     <option value="">Select</option>
@@ -167,27 +182,14 @@
                                     <option value="Industrial">Industrial</option>
                                 </select>
                             </div>
-                            <div class="col-md-6">
-                                <label class="form-label fw-semibold">Measurement Unit</label>
-                                <select wire:model="measurement_unit" class="form-control">
-                                    <option value="">Select</option>
-                                    <option value="Sq. Feet">Sq. Feet</option>
-                                    <option value="Sq. Yard">Sq. Yard</option>
-                                    <option value="Sq. Meter">Sq. Meter</option>
-                                    <option value="Sq. Acre">Sq. Acre</option>
-                                    <option value="Sq. Marla">Sq. Marla</option>
-                                    <option value="Sq. Bigha">Sq. Bigha</option>
-                                    <option value="Sq. Kanal">Sq. Kanal</option>
-                                </select>
-                            </div>
-                            <div class="col-md-6"><label class="form-label fw-semibold">Plot Type</label><select wire:model="plot_type" class="form-control">
+                            <div class="col-md-4"><label class="form-label fw-semibold">Plot Type</label><select wire:model="plot_type" class="form-control">
                                 <option value="">Select</option>
                                 <option value="Corner">Corner</option>
                                 <option value="On Road">On Road</option>
                                 <option value="Park Facing">Park Facing</option>
                                 <option value="Normal">Normal</option>
                             </select></div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <label class="form-label fw-semibold">Plot Number</label>
                                 <input type="text" wire:model="plot_number" class="form-control">
                             </div>
@@ -197,44 +199,78 @@
                                     back: @entangle('plot_back').defer,
                                     side1: @entangle('plot_side_1').defer,
                                     side2: @entangle('plot_side_2').defer,
-                                    get area() {
-                                        let avgWidth = (parseFloat(this.front || 0) + parseFloat(this.back || 0)) / 2;
-                                        let avgDepth = (parseFloat(this.side1 || 0) + parseFloat(this.side2 || 0)) / 2;
+                                    unit: '{{ $measurement_unit }}',
+
+                                    toFeet(value) {
+                                        if (this.unit === 'Sq. Meter') return value * 10.7639;
+                                        if (this.unit === 'Sq. Yard') return value * 9;
+                                        return value;
+                                    },
+
+                                    get areaSqFt() {
+                                        let front = this.toFeet(parseFloat(this.front || 0));
+                                        let back = this.toFeet(parseFloat(this.back || 0));
+                                        let side1 = this.toFeet(parseFloat(this.side1 || 0));
+                                        let side2 = this.toFeet(parseFloat(this.side2 || 0));
+
+                                        let avgWidth = (front + back) / 2;
+                                        let avgDepth = (side1 + side2) / 2;
                                         return (avgWidth * avgDepth).toFixed(2);
+                                    },
+
+                                    get areaSqYd() {
+                                        return (this.areaSqFt / 9).toFixed(2);
+                                    },
+
+                                    get areaSqM() {
+                                        return (this.areaSqFt / 10.7639).toFixed(2);
                                     }
                                 }"
                                 class="row g-3"
                             >
                                 <!-- Front -->
                                 <div class="col-md-6">
-                                    <label class="form-label fw-semibold">Front</label>
-                                    <input type="number" x-model="front" class="form-control" step="0.01">
+                                    <label class="form-label fw-semibold">Front<i> (in feets only)</i></label>
+                                    <input type="number" x-model="front" class="form-control">
                                 </div>
 
                                 <!-- Back -->
                                 <div class="col-md-6">
-                                    <label class="form-label fw-semibold">Back</label>
-                                    <input type="number" x-model="back" class="form-control" step="0.01">
+                                    <label class="form-label fw-semibold">Back<i> (in feets only)</i></label>
+                                    <input type="number" x-model="back" class="form-control">
                                 </div>
 
                                 <!-- Side 1 -->
                                 <div class="col-md-6">
-                                    <label class="form-label fw-semibold">Side 1</label>
-                                    <input type="number" x-model="side1" class="form-control" step="0.01">
+                                    <label class="form-label fw-semibold">Side 1<i> (in feets only)</i></label>
+                                    <input type="number" x-model="side1" class="form-control">
                                 </div>
 
                                 <!-- Side 2 -->
                                 <div class="col-md-6">
-                                    <label class="form-label fw-semibold">Side 2</label>
-                                    <input type="number" x-model="side2" class="form-control" step="0.01">
+                                    <label class="form-label fw-semibold">Side 2<i> (in feets only)</i></label>
+                                    <input type="number" x-model="side2" class="form-control">
                                 </div>
 
-                                <!-- Calculated Area (Live Display + Binding to Livewire) -->
-                                <div class="col-md-6">
-                                    <label class="form-label fw-semibold">Total Area (auto)</label>
-                                    <input type="text" x-bind:value="area" x-effect="$wire.plot_size = area" class="form-control bg-light" readonly>
+                                <!-- Total Area Sq. Feet -->
+                                <div class="col-md-4">
+                                    <label class="form-label fw-semibold">Total Area (auto) – Sq. Feet</label>
+                                    <input type="text" x-bind:value="areaSqFt" x-effect="$wire.plot_size = areaSqFt" class="form-control bg-light" readonly>
+                                </div>
+
+                                <!-- Total Area Sq. Yards -->
+                                <div class="col-md-4">
+                                    <label class="form-label fw-semibold">Total Area – Sq. Yards</label>
+                                    <input type="text" x-bind:value="areaSqYd" class="form-control bg-light" readonly>
+                                </div>
+
+                                <!-- Total Area Sq. Meters -->
+                                <div class="col-md-4">
+                                    <label class="form-label fw-semibold">Total Area – Sq. Meters</label>
+                                    <input type="text" x-bind:value="areaSqM" class="form-control bg-light" readonly>
                                 </div>
                             </div>
+
                             <div class="col-md-6">
                                 <label class="form-label fw-semibold">Price Per Sq. Ft. If applicable</label>
                                 <input type="number" wire:model="price_per_sqft" class="form-control" step="0.01">
@@ -297,67 +333,93 @@
                     <h5 class="mb-4 fw-bold text-secondary">🛒 Shop Details</h5>
                         <div class="row g-3">
                             <div class="col-md-6">
-                                <label class="form-label fw-semibold">Shop Type</label>
+                                <label class="form-label fw-semibold">Shop Location</label>
                                 <select wire:model="shop_type" class="form-control">
                                     <option value="">Select</option>
                                     <option value="In Market">In Market</option>
                                     <option value="In Mall">In Mall</option>
-                                    <option value="Standalone">Standalone</option>
+                                    <option value="Standalone">Standalone / In Residential Area</option>
                                     <option value="Other">Other</option>
                                 </select>
                             </div>
-                            <div class="col-md-6">
-                                <label class="form-label fw-semibold">Shop Area Unit</label>
-                                <select wire:model="shop_area_size_unit" class="form-control">
-                                    <option value="">Select</option>
-                                    <option value="Sq. Feet">Sq. Feet</option>
-                                    <option value="Sq. Meters">Sq. Meters</option>
-                                    <option value="Sq. Yards">Sq. Yards</option>
-                                </select>
-                            </div>
-                            <div 
+                            <<div 
                                 x-data="{
                                     front: @entangle('shop_front').defer,
                                     back: @entangle('shop_back').defer,
                                     side1: @entangle('shop_side_1').defer,
                                     side2: @entangle('shop_side_2').defer,
-                                    get area() {
-                                        let avgWidth = (parseFloat(this.front || 0) + parseFloat(this.back || 0)) / 2;
-                                        let avgDepth = (parseFloat(this.side1 || 0) + parseFloat(this.side2 || 0)) / 2;
+                                    unit: '{{ $shop_area_size_unit }}',
+
+                                    toFeet(value) {
+                                        if (this.unit === 'Meters') return value * 10.7639;
+                                        if (this.unit === 'Yards') return value * 9;
+                                        return value;
+                                    },
+
+                                    get areaSqFt() {
+                                        let front = this.toFeet(parseFloat(this.front || 0));
+                                        let back = this.toFeet(parseFloat(this.back || 0));
+                                        let side1 = this.toFeet(parseFloat(this.side1 || 0));
+                                        let side2 = this.toFeet(parseFloat(this.side2 || 0));
+
+                                        let avgWidth = (front + back) / 2;
+                                        let avgDepth = (side1 + side2) / 2;
                                         return (avgWidth * avgDepth).toFixed(2);
+                                    },
+
+                                    get areaSqYd() {
+                                        return (this.areaSqFt / 9).toFixed(2);
+                                    },
+
+                                    get areaSqM() {
+                                        return (this.areaSqFt / 10.7639).toFixed(2);
                                     }
                                 }"
-                                class="row g-3">
-                                <!-- Shop Front -->
+                                class="row g-3"
+                            >
+                                <!-- Front -->
                                 <div class="col-md-6">
-                                    <label class="form-label fw-semibold">Front</label>
+                                    <label class="form-label fw-semibold">Front<i> (in feets only)</i></label>
                                     <input type="number" x-model="front" class="form-control">
                                 </div>
 
-                                <!-- Shop Back -->
+                                <!-- Back -->
                                 <div class="col-md-6">
-                                    <label class="form-label fw-semibold">Back</label>
+                                    <label class="form-label fw-semibold">Back<i> (in feets only)</i></label>
                                     <input type="number" x-model="back" class="form-control">
                                 </div>
 
-                                <!-- Shop Side 1 -->
+                                <!-- Side 1 -->
                                 <div class="col-md-6">
-                                    <label class="form-label fw-semibold">Side 1</label>
+                                    <label class="form-label fw-semibold">Side 1<i> (in feets only)</i></label>
                                     <input type="number" x-model="side1" class="form-control">
                                 </div>
 
-                                <!-- Shop Side 2 -->
+                                <!-- Side 2 -->
                                 <div class="col-md-6">
-                                    <label class="form-label fw-semibold">Side 2</label>
+                                    <label class="form-label fw-semibold">Side 2<i> (in feets only)</i></label>
                                     <input type="number" x-model="side2" class="form-control">
                                 </div>
 
-                                <!-- Auto Calculated Area -->
-                                <div class="col-md-6">
-                                    <label class="form-label fw-semibold">Shop Area (auto)</label>
-                                    <input type="text" x-bind:value="area" x-effect="$wire.shop_area_size = area" class="form-control bg-light" readonly>
+                                <!-- Total Area Sq. Feet -->
+                                <div class="col-md-4">
+                                    <label class="form-label fw-semibold">Shop Area (auto) – Sq. Feet</label>
+                                    <input type="text" x-bind:value="areaSqFt" x-effect="$wire.shop_area_size = areaSqFt" class="form-control bg-light" readonly>
+                                </div>
+
+                                <!-- Total Area Sq. Yards -->
+                                <div class="col-md-4">
+                                    <label class="form-label fw-semibold">Shop Area – Sq. Yards</label>
+                                    <input type="text" x-bind:value="areaSqYd" class="form-control bg-light" readonly>
+                                </div>
+
+                                <!-- Total Area Sq. Meters -->
+                                <div class="col-md-4">
+                                    <label class="form-label fw-semibold">Shop Area – Sq. Meters</label>
+                                    <input type="text" x-bind:value="areaSqM" class="form-control bg-light" readonly>
                                 </div>
                             </div>
+
                         <div class="col-md-6"><label class="form-label fw-semibold">At Floor No.</label><input type="number" wire:model="shop_floor" class="form-control"></div>
                             <div class="col-md-12 d-flex align-items-center mt-2">
                                 <input type="checkbox" wire:model="shop_with_water_connection" id="water" class="form-check-input me-2">
@@ -383,9 +445,6 @@
                                 <label class="form-label fw-semibold">Land Area Unit</label>
                                 <select wire:model="land_area_size_unit" class="form-control">
                                     <option value="">Select</option>
-                                    <option value="Feet">Feet</option>
-                                    <option value="Meters">Meters</option>
-                                    <option value="Yards">Yards</option>
                                     <option value="Marla">Marla</option>
                                     <option value="Kanal">Kanal</option>
                                     <option value="Kila">Kila</option>
@@ -412,7 +471,7 @@
                     <div class="row g-3">
                         <!-- City -->
                         <div class="col-md-6">
-                            <label class="form-label fw-semibold">City</label>
+                            <label class="form-label fw-semibold">City / Nearby City</label>
                             <select wire:model="city_id" class="form-control">
                                 <option value="">Select City</option>
                                 @foreach ($cities as $city)
@@ -482,7 +541,7 @@
                         <!-- Total Area (Label Based) -->
                         <div class="col-md-4">
                             <label class="form-label fw-semibold">Total Area</label>
-                            <input type="text" wire:model="area" class="form-control" placeholder="e.g. 1200 Sq. Ft.">
+                            <input type="text" wire:model="area" class="form-control" placeholder="e.g. 1200">
                         </div>
 
                         <!-- Area Unit -->
@@ -550,7 +609,14 @@
                             <textarea wire:model="description" rows="5" class="form-control" placeholder="Describe your property..."></textarea>
                             @error('description') <small class="text-danger">{{ $message }}</small> @enderror
                         </div>
-                
+                        
+                        <!-- Video Link -->
+                        <div class="col-md-12">
+                            <label class="form-label fw-semibold">Video Link <i>(YouTube video link only, Please don't insert Real and Short video link.)</i></label>
+                            <input type="text" wire:model="video_link" class="form-control" placeholder="e.g. https://www.youtube.com/watch?v=example">
+                            @error('video_link') <small class="text-danger">{{ $message }}</small> @enderror
+                        </div>
+                        
                     </div>
                 </div>
                 <button type="submit">Submit Property</button>

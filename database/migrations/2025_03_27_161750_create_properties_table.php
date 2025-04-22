@@ -97,6 +97,8 @@ return new class extends Migration
             $table->enum('facing', ['North', 'North-East', 'North-West', 'South', 'South-East', 'South-West', 'East', 'West'])->nullable();
             $table->string('status')->default('active'); // pending, active, sold, etc.
             $table->unsignedBigInteger('user_id'); // seller, broker, Employee, etc.
+            // youtube video link
+            $table->string('video_link')->nullable();
 
             $table->timestamps();
             $table->softDeletes(); // optional but useful for recovery

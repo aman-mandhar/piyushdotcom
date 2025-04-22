@@ -41,4 +41,13 @@ class UserProfileController extends Controller
 
         return redirect()->route('profile.edit')->with('success', 'Profile updated successfully!');
     }
+
+    public function show($id)
+    {
+        $profile = UserProfile::where('user_id', $id)->first();
+        if (!$profile) {
+            return redirect()->route('home')->with('error', 'Profile not found.');
+        }
+        return view('show-profile', compact('profile'));
+    }
 }

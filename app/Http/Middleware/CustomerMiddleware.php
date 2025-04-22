@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
 
-class SellerMiddleware
+class CustomerMiddleware
 {
     /**
      * Handle an incoming request.
@@ -16,7 +16,7 @@ class SellerMiddleware
      */
     public function handle($request, Closure $next)
     {
-        if (Auth::check() && Auth::user()->role_id == 3) {
+        if (Auth::check() && Auth::user()->role_id == 2) {
             return $next($request);
         }
     

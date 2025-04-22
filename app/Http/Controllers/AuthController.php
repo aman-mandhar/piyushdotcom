@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use Illuminate\Support\Facades\Session;
+use App\Models\City;
+use App\Models\Role;
 
 class AuthController extends Controller
 {
@@ -22,6 +24,20 @@ class AuthController extends Controller
         }
 
         return view('login'); // Your Blade view
+    }
+
+    public function login(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|string|email',
+            'password' => 'required|string|min:8'
+        ]);
+
+        if (Auth::attempt($request->only('email', 'password'))) {
+            return redirect()->intended($this->redirectDash());
+        }
+
+        return back()->with('error', 'Invalid email or password');
     }
 
     public function showRegisterForm()
@@ -57,19 +73,7 @@ class AuthController extends Controller
         return redirect()->route('login')->with('success', 'Your registration has been successful.');
     }
 
-    public function login(Request $request)
-    {
-        $request->validate([
-            'email' => 'required|string|email',
-            'password' => 'required|string|min:8'
-        ]);
-
-        if (Auth::attempt($request->only('email', 'password'))) {
-            return redirect()->intended($this->redirectDash());
-        }
-
-        return back()->with('error', 'Invalid email or password');
-    }
+    
 
     public function logout()
     {
@@ -85,9 +89,7 @@ class AuthController extends Controller
         $routes = [
             1 => route('admin.dashboard'),
             2 => route('customer.dashboard'),
-            3 => route('broker.dashboard'),
-            4 => route('developer.dashboard'),
-            
+            3 => route('employee.dashboard'),
         ];
 
         return $routes[$role] ?? route('home');
@@ -99,5 +101,29 @@ class AuthController extends Controller
             return redirect($this->redirectDash());
         }
         return view('login');
+    }
+
+    public function changeRole()
+    {
+        return view('change-role');
+    }
+
+    public function updateRole(Request $request)
+    {
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'role_id' => 'required|exists:roles,id',
+        ]);
+        $user = User::find($request->user_id);
+        if (!$user) {
+            return redirect()->back()->with('error', 'User not found.');
+        }
+        if ($user->role_id == $request->role_id) {
+            return redirect()->back()->with('error', 'User already has this role.');
+        }
+        $user->role_id = $request->role_id;
+        $user->save();
+
+        return redirect()->back()->with('success', 'Role changed successfully.');
     }
 }
