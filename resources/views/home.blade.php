@@ -227,7 +227,7 @@
                                             <p class="mb-1"><strong>Type:</strong> {{ $property->property_type }} | {{ $property->listing_type }}</p>
 
                                             <div class="mt-auto d-flex justify-content-between align-items-center">
-                                                <a href="{{ route('properties.show', $property->slug) }}" class="btn btn-sm btn-outline-primary">View</a>
+                                                <a href="{{ route('properties.view', $property->slug) }}" class="btn btn-sm btn-outline-primary">View</a>
                                             </div>
                                         </div>
                                     </div>

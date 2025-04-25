@@ -34,6 +34,12 @@ class PropertyController extends Controller
         return view('properties.show', compact('property'));
     }
 
+    public function view(Property $property)
+    {
+        $property = Property::with(['city', 'user'])->where('slug', $property->slug)->firstOrFail();
+        return view('view', compact('property'));
+    }
+
     /**
      * Show all properties (public detail page)
      */

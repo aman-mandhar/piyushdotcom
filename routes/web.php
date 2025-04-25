@@ -25,6 +25,10 @@ Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('regi
 Route::post('/register', [AuthController::class, 'register'])->name('register');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
+Route::get('/{property:slug}/view', [PropertyController::class, 'view'])->name('properties.view');
+
+
+
 // ------------------------------------
 // Authenticated User Routes
 // ------------------------------------
