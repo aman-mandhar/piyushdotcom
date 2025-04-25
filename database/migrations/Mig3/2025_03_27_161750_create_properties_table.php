@@ -35,7 +35,7 @@ return new class extends Migration
             $table->enum('plot_category', ['Residential', 'Commercial', 'Industrial'])->nullable();
             
             // Plot Details
-            $table->enum('measurement_unit', ['Sq. Feet', 'Sq. Yard', 'Sq. Meter', 'Sq. Acre', 'Sq. Marla', 'Sq. Bigha', 'Sq. Kanal'])->nullable();
+            $table->enum('measurement_unit', ['Sq. Feet', 'Sq. Yard', 'Sq. Meter', 'Sq. Acre', 'Sq. Marla', 'Sq. Bigha', 'Sq. Kanal'])->nullable()->default('Sq. Feet');
             $table->enum('plot_type', ['Corner', 'On Road', 'Park Facing', 'Normal'])->nullable();
             $table->string('plot_number')->nullable(); // Changed from decimal to string
             $table->decimal('plot_front', 12, 2)->nullable();
@@ -81,7 +81,7 @@ return new class extends Migration
             // Common Fields
             $table->enum('price_in_unit', ['Lakh', 'Crore', 'Thousand', 'Millon', 'Billon', 'Trillion']);
             $table->decimal('price', 15, 2);
-            $table->enum('negotiable_price', ['Yes', 'No'])->nullable();
+            $table->enum('negotiable_price', ['Yes', 'No'])->nullable()->default('No');
             $table->decimal('market_price', 15, 2)->nullable(); // Average price in the area
             $table->string('hospital_distance')->nullable();
             $table->string('railway_distance')->nullable();
@@ -94,7 +94,7 @@ return new class extends Migration
             $table->string('area')->nullable();
             $table->string('area_unit')->nullable();
             $table->string('location');
-            $table->enum('facing', ['North', 'North-East', 'North-West', 'South', 'South-East', 'South-West', 'East', 'West'])->nullable();
+            $table->enum('facing', ['North', 'North-East', 'North-West', 'South', 'South-East', 'South-West', 'East', 'West', 'N/A'])->nullable()->default-('N/A');
             $table->string('status')->default('active'); // pending, active, sold, etc.
             $table->unsignedBigInteger('user_id'); // seller, broker, Employee, etc.
             // youtube video link

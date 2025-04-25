@@ -221,7 +221,7 @@ class CreateProperty extends Component
             
             // Step 2 (optional dynamic fields)
             'plot_category' => $this->plot_category,
-            'measurement_unit' => "Square Feet",
+            'measurement_unit' => 'Sq. Feet',
             'plot_type' => $this->plot_type,
             'plot_number' => $this->plot_number,
             'plot_front' => $this->plot_front,
@@ -243,7 +243,7 @@ class CreateProperty extends Component
             'office_area_size' => $this->office_area_size,
             'office_furnishing_status' => $this->office_furnishing_status,
             'shop_type' => $this->shop_type,
-            'shop_area_size_unit' => "Square Feet",
+            'shop_area_size_unit' => 'Sq. Feet',
             'shop_front' => $this->shop_front,
             'shop_back' => $this->shop_back,
             'shop_side_1' => $this->shop_side_1,

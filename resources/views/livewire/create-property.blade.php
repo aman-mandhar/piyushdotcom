@@ -84,13 +84,13 @@
                         <!-- Slug -->
                         <div class="col-md-6">
                             <label class="form-label fw-semibold">Address of Property</label>
-                            <input type="text" wire:model="property_address" class="form-control bg-light">
+                            <input type="text" wire:model="property_address" class="form-control bg-light" required>
                         </div>
 
                         <!--Court Case -->
                         <div class="col-md-4">
                             <label class="form-label fw-semibold">If any Court Case</label>
-                            <select wire:model.lazy="court_case" class="form-select shadow-sm">
+                            <select wire:model.lazy="court_case" class="form-select shadow-sm" required>
                                 <option value="">Select</option>
                                 <option value="Yes">Yes</option>
                                 <option value="No">No</option>
@@ -139,7 +139,7 @@
                         <!-- Listing Type -->
                         <div class="col-md-6">
                             <label class="form-label fw-semibold">Listing Type</label>
-                            <select wire:model="listing_type" class="form-select shadow-sm">
+                            <select wire:model="listing_type" class="form-select shadow-sm" required>
                                 <option value="">Select</option>
                                 <option value="Sale">Sale</option>
                                 <option value="Rent">Rent</option>
@@ -152,7 +152,7 @@
                         <!-- Property Type -->
                         <div class="col-md-6">
                             <label class="form-label fw-semibold">Property Type</label>
-                            <select wire:model.lazy="property_type" class="form-select shadow-sm">
+                            <select wire:model.lazy="property_type" class="form-select shadow-sm" required>
                                 <option value="">Select</option>
                                 <option value="Plot">Plot</option>
                                 <option value="House">House</option>
