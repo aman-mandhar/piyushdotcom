@@ -103,8 +103,7 @@ class Register extends Component
         $routes = [
             1 => route('admin.dashboard'),
             2 => route('customer.dashboard'),
-            3 => route('broker.dashboard'),
-            4 => route('hd.dashboard'),
+            3 => route('employee.dashboard'),
         ];
 
         $role = Auth::user()->role_id;
