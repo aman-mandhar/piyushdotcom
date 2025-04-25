@@ -195,7 +195,7 @@ class CreateProperty extends Component
                 'land_type' => 'nullable',
                 'land_area_size_unit' => 'nullable',
                 'current_status_of_land' => 'nullable',
-                'land_area_size' => 'required|numeric',
+                'land_area_size' => 'nullable|numeric',
             ]);
         }
 
