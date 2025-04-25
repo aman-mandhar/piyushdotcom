@@ -27,7 +27,6 @@
                     <div class="navbar-nav ms-auto">
                         <a href="{{ route('home')}}" class="nav-item nav-link active">Home</a>
                         <a href="{{ route('properties.index') }}" class="nav-item nav-link">Property</a>
-                        <a href="{{ route('contact') }}" class="nav-item nav-link">Contact</a>
                     </div>
                         <div class="navbar-nav ms-auto nav-item dropdown">
                             <a href="#" class="nav-item nav-link dropdown-toggle" data-bs-toggle="dropdown">Contstruction Directory</a>
