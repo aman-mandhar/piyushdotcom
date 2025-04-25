@@ -259,7 +259,7 @@ class CreateProperty extends Component
             // Step 3
             'city_id' => $this->city_id,
             'location' => $this->location,
-            'price_in' => $this->price_in,
+            'price_in_unit' => $this->price_in,
             'price' => $this->price,
             'negotiable_price' => $this->negotiable_price,
             'market_price' => $this->market_price,
