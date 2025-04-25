@@ -28,16 +28,17 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        $request->validate([
-            'email' => 'required|string|email',
-            'password' => 'required|string|min:8'
-        ]);
-
-        if (Auth::attempt($request->only('email', 'password'))) {
-            return redirect()->intended($this->redirectDash());
+        $credentials = $request->only('email', 'password');
+    
+        if (Auth::attempt($credentials, $request->filled('remember'))) {
+            $request->session()->regenerate();
+    
+            return redirect()->to($request->input('redirect_to', route('dashboard')));
         }
-
-        return back()->with('error', 'Invalid email or password');
+    
+        return back()->withErrors([
+            'email' => 'Invalid login credentials.',
+        ]);
     }
 
     public function showRegisterForm()

@@ -1,12 +1,11 @@
 @extends('layouts.front.layout')
-
-@section('title', $property->title)
+@section('title', $property->property_title . ' | ' . $property->location . ', ' . $property->city->name)
+@section('keywords', 'property, real estate, rent, buy, house, plot, commercial')
 @section('description', Str::limit($property->description, 150))
 @section('og_title', $property->title)
 @section('og_description', Str::limit($property->description, 150))
 @section('og_image', asset('storage/' . $property->image))
 @section('og_url', url()->current())
-
 @section('content')
 <div class="container py-5">
     <!-- Heading -->
@@ -137,69 +136,12 @@
                 <h5 class="mb-3">Contact Seller</h5>
                 <p><strong>Name:</strong> {{ $property->user->name }}</p>
                 <p><strong>City:</strong> {{ $property->user->city->name }}</p>
-                @php
-                    $user = Auth::user();
-                @endphp
-                @if($user == null)
-                    <h6>
-                        <div class="text-danger">Login to see the contact details</div>
-                    </h6>
-                    <div class="mt-3">
-                        <form method="POST" action="{{ route('login') }}">
-                            @csrf
-                            <div class="row mb-3">
-                                <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Email Address') }}</label>
-                                <div class="col-md-6">
-                                    <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
-                                    @error('email')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="row mb-3">
-                                <label for="password" class="col-md-4 col-form-label text-md-end">{{ __('Password') }}</label>
-                                <div class="col-md-6">
-                                    <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
-                                    @error('password')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                            </div>
-                            
-                            <div class="row mb-3">
-                                <div class="col-md-6 offset-md-4">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-                                        <label class="form-check-label" for="remember">
-                                            {{ __('Remember Me') }}
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row mb-0">
-                                <div class="col-md-8 offset-md-4">
-                                    <button type="submit" class="btn btn-primary">
-                                        {{ __('Login') }}
-                                    </button>
-                                    @if (Route::has('password.request'))
-                                        <a class="btn btn-link" href="{{ route('password.request') }}">
-                                            {{ __('Forgot Your Password?') }}
-                                        </a>
-                                    @endif
-                                </div>
-                            </div>
-                        </form>
-                        <span>New User <a href="{{ route('register') }}" class="btn btn-outline-primary w-100 mt-2">FREE SignUp!</a></span>
-                    </div>
-                @else
+
                 @auth
                     @php
                         $city_id = $property->city_id;
                     @endphp
+
                     @if($property->user_id == auth()->user()->id)
                         <div class="mt-auto d-flex justify-content-between align-items-center">
                             <p class="text-success">This Property is created by you.</p>
@@ -215,70 +157,59 @@
                             @csrf
                             <input type="hidden" name="user_id" value="{{ auth()->id() }}">
                             <input type="hidden" name="city_id" value="{{ $city_id }}">
-                        
-                            @if(isset($property))
-                                <input type="hidden" name="property_id" value="{{ $property->id }}">
-                                <input type="hidden" name="mobile" value="+919216051212">
-                            @elseif(isset($vehicle))
-                                <input type="hidden" name="vehicle_id" value="{{ $vehicle->id }}">
-                                <input type="hidden" name="mobile" value="+919216051212">
-                            @elseif(isset($directory))
-                                <input type="hidden" name="directory_id" value="{{ $directory->id }}">
-                                <input type="hidden" name="mobile" value="+919216051212">
-                            @endif
-                        
+                            <input type="hidden" name="property_id" value="{{ $property->id }}">
+                            <input type="hidden" name="mobile" value="+919216051212">
+
                             <button type="submit" class="btn btn-outline-success w-100 mt-2">📞 Call Now</button>
                         </form>
                     @endif
-                        {{-- OR Option B: Modal trigger --}}
-                        {{-- <a href="#" class="btn btn-success w-100 mt-2" data-bs-toggle="modal" data-bs-target="#authModal">Login to Contact</a> --}}
+                @else
+                    <div class="text-danger fw-semibold">Login to see the contact details</div>
+                    <button class="btn btn-outline-primary w-100 mt-3" data-bs-toggle="modal" data-bs-target="#loginModal">
+                        🔐 Login to Contact Seller
+                    </button>
+                    <a href="{{ route('register') }}" class="btn btn-outline-success w-100 mt-2">🆓 Free Signup</a>
                 @endauth
-                @endif
             </div>
-            <!-- Displaying the youtube video if available -->
-            <div class="card p-4 mt-4">
-                <h5 class="mb-3">Video Tour</h5>
-                @php
+
+            <!-- Video Card -->
+            @php
                     use Illuminate\Support\Str;
-
                     $embedUrl = null;
+                    $url = $property->video_link;
 
-                    if (!empty($property->video_link)) {
-                        $url = $property->video_link;
-
-                        // Check for full YouTube link
-                        if (Str::contains($url, 'watch?v=')) {
-                            $parsed = parse_url($url);
-                            parse_str($parsed['query'] ?? '', $queryParams);
-                            if (!empty($queryParams['v'])) {
-                                $embedUrl = 'https://www.youtube.com/embed/' . $queryParams['v'];
-                            }
-                        }
-
-                        // Check for short youtu.be link
-                        if (Str::contains($url, 'youtu.be/')) {
-                            $segments = explode('/', $url);
-                            $videoId = end($segments);
-                            $embedUrl = 'https://www.youtube.com/embed/' . $videoId;
+                    if (Str::contains($url, 'watch?v=')) {
+                        $parsed = parse_url($url);
+                        parse_str($parsed['query'] ?? '', $queryParams);
+                        if (!empty($queryParams['v'])) {
+                            $embedUrl = 'https://www.youtube.com/embed/' . $queryParams['v'];
                         }
                     }
-                @endphp
 
+                    if (Str::contains($url, 'youtu.be/')) {
+                        $segments = explode('/', $url);
+                        $videoId = end($segments);
+                        $embedUrl = 'https://www.youtube.com/embed/' . $videoId;
+                    }
+            @endphp
+            @if (!empty($property->video_link))
                 @if ($embedUrl)
                     <div class="card p-4 mt-4">
                         <h5 class="mb-3">🎥 Video Tour</h5>
                         <div class="ratio ratio-16x9">
                             <iframe src="{{ $embedUrl }}"
-                                    title="YouTube video player"
+                                    title="YouTube video"
                                     frameborder="0"
-                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                     allowfullscreen>
                             </iframe>
                         </div>
                     </div>
                 @endif
-            </div>
+            @endif
         </div>
     </div>
 </div>
 @endsection
+<!-- Modal Login Component -->
+@include('components.modal-login')  
