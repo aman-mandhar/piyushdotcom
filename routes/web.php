@@ -25,6 +25,8 @@ Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('regi
 Route::post('/register', [AuthController::class, 'register'])->name('register');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
+Route::get('/universal-dashboard', [DashboardController::class, 'universal'])->name('dashboard.universal');
+
 Route::get('/{property:slug}/view', [PropertyController::class, 'view'])->name('properties.view');
 
 

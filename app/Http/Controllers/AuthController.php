@@ -29,13 +29,20 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');
-    
+
         if (Auth::attempt($credentials, $request->filled('remember'))) {
             $request->session()->regenerate();
-    
-            return redirect()->to($request->input('redirect_to', route('dashboard')));
+
+            $redirectTo = $request->input('redirect_to');
+
+            // 🚨 Safer check: Only allow internal URLs
+            if ($redirectTo && str_starts_with($redirectTo, url('/'))) {
+                return redirect()->to($redirectTo);
+            }
+
+            return redirect()->route('home');
         }
-    
+
         return back()->withErrors([
             'email' => 'Invalid login credentials.',
         ]);
