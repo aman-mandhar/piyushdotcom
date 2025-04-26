@@ -1,11 +1,16 @@
 @extends('layouts.front.layout')
 @section('title', $property->property_title . ' | ' . $property->location . ', ' . $property->city->name)
-@section('keywords', 'property, real estate, rent, buy, house, plot, commercial')
 @section('description', Str::limit($property->description, 150))
-@section('og_title', $property->title)
+@section('keywords', 'property, real estate, rent, buy, house, plot, commercial')
+
+@section('og_title', $property->property_title . ' – PiyushDotCom')
 @section('og_description', Str::limit($property->description, 150))
 @section('og_image', asset('storage/' . $property->image))
 @section('og_url', url()->current())
+
+@section('twitter_title', $property->property_title . ' – PiyushDotCom')
+@section('twitter_description', Str::limit($property->description, 150))
+@section('twitter_image', asset('storage/' . $property->image))
 @section('content')
 <div class="container py-5">
     <!-- Heading -->

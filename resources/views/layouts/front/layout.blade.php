@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- OG (Open Graph) -->
-    <meta property="og:title" content="@yield('og_title', 'Makaan - Real Estate Portal')" />
+    <meta property="og:title" content="@yield('og_title', 'PiyushDotCom - Real Estate Portal')" />
     <meta property="og:description" content="@yield('og_description', 'Search and list properties easily with us')" />
     <meta property="og:image" content="@yield('og_image', asset('img/logo.png'))" />
     <meta property="og:url" content="@yield('og_url', url()->current())" />
