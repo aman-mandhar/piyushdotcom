@@ -135,7 +135,7 @@ class CreateProperty extends Component
                 'area' => 'required|string|max:255',
                 'location' => 'required|string|max:255',
                 'facing' => 'nullable',
-                'image' => 'nullable|image|max:5120',
+                'image' => 'nullable|image|max:5120|mimes:jpeg,png,jpg,gif,svg',
                 'description' => 'nullable|string|max:1000',
                 'video_link' => 'nullable|url|max:255',
                 
