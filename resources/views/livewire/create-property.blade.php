@@ -534,7 +534,7 @@
                             <input type="file" wire:model="image" class="form-control">
                             @if ($image)
                                 <div class="mt-3">
-                                    <img src="{{ $image->temporaryUrl() }} ({{ round($image->getSize() / 1024, 2) }} KB)" class="img-thumbnail rounded shadow-sm" style="max-width: 150px;" alt="Preview">
+                                    <img src="{{ $image->temporaryUrl() }}" class="img-thumbnail rounded shadow-sm" style="max-width: 150px;" alt="Preview">
                                 </div>
                             @endif
                             @error('image') <small class="text-danger">{{ $message }}</small> @enderror
