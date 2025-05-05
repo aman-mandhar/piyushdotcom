@@ -13,83 +13,24 @@
                     
                 </div>
                 <div class="bg-white border border-light rounded p-4 shadow-sm mb-4">
-                    <h5 class="mb-4 fw-bold text-secondary">👤 Owner/Contact Person's Information</h5>
-                
-                    <div class="row">
-                        <!-- Row 1: Full width -->
-                        <div class="col-12 mb-3">
-                            <label class="form-label fw-semibold">Owner/Contact Name <span class="text-danger">*</span></label>
-                            <input type="text" wire:model="owner_name" placeholder="e.g. Aman" class="form-control">
-                            @error('owner_name') <small class="text-danger">{{ $message }}</small> @enderror
-                        </div>
-                
-                        <!-- Row 2 -->
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label fw-semibold">Owner/Contact Mobile <span class="text-danger">*</span></label>
-                            <input type="text" wire:model="owner_contact" placeholder="e.g. 9592306823" class="form-control">
-                            @error('owner_contact') <small class="text-danger">{{ $message }}</small> @enderror
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label fw-semibold">Owner/Contact Email</label>
-                            <input type="email" wire:model="owner_email" placeholder="e.g. aman@email.com" class="form-control">
-                        </div>
-                
-                        <!-- Row 3 -->
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label fw-semibold">Owner/Contact Address</label>
-                            <input type="text" wire:model="owner_address" placeholder="e.g. House No. 123, Model Town" class="form-control">
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label fw-semibold">Owner/Contact's Nationality</label>
-                            <select wire:model="owner_nationality" class="form-select">
-                                <option value="">Select</option>
-                                <option value="Indian">Indian</option>
-                                <option value="NRI">NRI</option>
-                                <option value="Other">Other</option>
-                            </select>
-                        </div>
-                
-                        <!-- Row 4 -->
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label fw-semibold">Contact Type</label>
-                            <select wire:model="owner_type" class="form-select">
-                                <option value="">Select</option>
-                                <option value="Individual">Individual</option>
-                                <option value="Broker">Broker</option>
-                                <option value="Investor">Investor</option>
-                                <option value="Builder">Builder</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label fw-semibold">Property Document you have?</label>
-                            <select wire:model="owner_document_type" class="form-select">
-                                <option value="">Select</option>
-                                <option value="Registry">Registry</option>
-                                <option value="Kabza">Kabza</option>
-                                <option value="Power of Attorney">Power of Attorney</option>
-                                <option value="By Parent">By Parent</option>
-                                <option value="Other">Other</option>
-                            </select>
-                        </div>
-                    </div>
                     <div class="row g-4">
-                        <h5 class="mb-4 fw-bold text-secondary">📋 Basic Info</h5>
+                        <h5 class="mb-4 fw-bold text-secondary">📋 Basic detail of Property</h5>
                         <!-- Property Title -->
-                        <div class="col-md-6">
-                            <label class="form-label fw-semibold">Property Title</label>
+                        <div class="col-md-12">
+                            <label class="form-label fw-semibold">Property Title <i>(It will be helpful to search your property over the internet)</i></label>
                             <input type="text" wire:model="property_title" class="form-control shadow-sm" placeholder="e.g. 3 BHK Flat in XYZ Society">
                             @error('property_title') <small class="text-danger">{{ $message }}</small> @enderror
                         </div>
                     
                         <!-- Slug -->
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <label class="form-label fw-semibold">Address of Property</label>
-                            <input type="text" wire:model="property_address" class="form-control bg-light" required>
+                            <input type="textarea" wire:model="property_address" class="form-control bg-light" required>
                         </div>
 
                         <!--Court Case -->
                         <div class="col-md-4">
-                            <label class="form-label fw-semibold">If any Court Case</label>
+                            <label class="form-label fw-semibold">Is any Court Case about this property?</label>
                             <select wire:model.lazy="court_case" class="form-select shadow-sm" required>
                                 <option value="">Select</option>
                                 <option value="Yes">Yes</option>
@@ -101,7 +42,7 @@
                         <!-- Case Details -->
                         @if($court_case === 'Yes')
                             <div class="col-md-4">
-                                <label class="form-label fw-semibold">Court Case Details</label>
+                                <label class="form-label fw-semibold">Details of Court Case</label>
                                 <input type="text" wire:model="court_case_details" class="form-control shadow-sm" placeholder="e.g. Case No. 1234, Court Name">
                                 @error('court_case_details') <small class="text-danger">{{ $message }}</small> @enderror
                             </div>
@@ -138,24 +79,24 @@
                         @endif
                         <!-- Listing Type -->
                         <div class="col-md-6">
-                            <label class="form-label fw-semibold">Listing Type</label>
+                            <label class="form-label fw-semibold">I am posting the property for :</label>
                             <select wire:model="listing_type" class="form-select shadow-sm" required>
                                 <option value="">Select</option>
                                 <option value="Sale">Sale</option>
                                 <option value="Rent">Rent</option>
                                 <option value="Lease">Lease</option>
-                                <option value="Collaborate">Collaborate</option>
                             </select>
                             @error('listing_type') <small class="text-danger">{{ $message }}</small> @enderror
                         </div>
                     
                         <!-- Property Type -->
                         <div class="col-md-6">
-                            <label class="form-label fw-semibold">Property Type</label>
+                            <label class="form-label fw-semibold">Type of Property</label>
                             <select wire:model.lazy="property_type" class="form-select shadow-sm" required>
                                 <option value="">Select</option>
                                 <option value="Plot">Plot</option>
-                                <option value="House">House</option>
+                                <option value="House">Indipendent House</option>
+                                <option value="Flat">Flat</option>
                                 <option value="Apartment">Apartment</option>
                                 <option value="Villa">Villa</option>
                                 <option value="Office">Office</option>
@@ -616,7 +557,65 @@
                             <input type="text" wire:model="video_link" class="form-control" placeholder="e.g. https://www.youtube.com/watch?v=example">
                             @error('video_link') <small class="text-danger">{{ $message }}</small> @enderror
                         </div>
-                        
+                        <h5 class="mb-4 fw-bold text-secondary">👤 Owner/Contact Person's Information</h5>
+                
+                    <div class="row">
+                        <!-- Row 1: Full width -->
+                        <div class="col-12 mb-3">
+                            <label class="form-label fw-semibold">Owner/Contact Name <span class="text-danger">*</span></label>
+                            <input type="text" wire:model="owner_name" placeholder="e.g. Aman" class="form-control">
+                            @error('owner_name') <small class="text-danger">{{ $message }}</small> @enderror
+                        </div>
+                
+                        <!-- Row 2 -->
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-semibold">Owner/Contact Mobile <span class="text-danger">*</span></label>
+                            <input type="text" wire:model="owner_contact" placeholder="e.g. 9592306823" class="form-control">
+                            @error('owner_contact') <small class="text-danger">{{ $message }}</small> @enderror
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-semibold">Owner/Contact Email</label>
+                            <input type="email" wire:model="owner_email" placeholder="e.g. aman@email.com" class="form-control">
+                        </div>
+                
+                        <!-- Row 3 -->
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-semibold">Owner/Contact Address</label>
+                            <input type="text" wire:model="owner_address" placeholder="e.g. House No. 123, Model Town" class="form-control">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-semibold">Owner/Contact's Nationality</label>
+                            <select wire:model="owner_nationality" class="form-select">
+                                <option value="">Select</option>
+                                <option value="Indian">Indian</option>
+                                <option value="NRI">NRI</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                
+                        <!-- Row 4 -->
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-semibold">Contact Type</label>
+                            <select wire:model="owner_type" class="form-select">
+                                <option value="">Select</option>
+                                <option value="Individual">Known/Self Owner </option>
+                                <option value="Broker">Broker</option>
+                                <option value="Investor">Investor</option>
+                                <option value="Builder">Builder</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-semibold">Property Document you have?</label>
+                            <select wire:model="owner_document_type" class="form-select">
+                                <option value="">Select</option>
+                                <option value="Registry">Registry</option>
+                                <option value="Kabza">Kabza</option>
+                                <option value="Power of Attorney">Power of Attorney</option>
+                                <option value="By Parent">By Parent</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
                     </div>
                 </div>
                 <button type="submit">Submit Property</button>
