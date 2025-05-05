@@ -30,9 +30,10 @@ Route::get('/universal-dashboard', [DashboardController::class, 'universal'])->n
 Route::get('/properties', [PropertyController::class, 'index'])->name('properties.index');
 Route::get('/properties/create', [PropertyController::class, 'create'])->name('properties.create');
 Route::get('/properties/{property:slug}/show', [PropertyController::class, 'show'])->name('properties.show');
+Route::get('/properties/my-search', [PropertyController::class, 'mySearch'])->name('properties.my-search');
         
 
-Route::get('/{property:slug}/view', [PropertyController::class, 'view'])->name('properties.view');
+
 
 
 
@@ -50,6 +51,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/properties/search', [PropertyController::class, 'search'])->name('properties.search');
     Route::get('/properties/my-properties', [PropertyController::class, 'myProperties'])->name('properties.my-properties');
     Route::get('/properties/show-all/{id}', [PropertyController::class, 'showAll'])->name('properties.show-all');
+    Route::get('/properties/search', [PropertyController::class, 'search'])->name('properties.search');
+    
+    
 
     // Vehicles
     Route::get('/vehicles', [VehicleController::class, 'index'])->name('vehicles.index');

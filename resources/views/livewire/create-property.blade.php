@@ -535,7 +535,7 @@
                             @if ($image)
                                 @if (method_exists($image, 'temporaryUrl'))
                                     <div class="mt-3">
-                                        <img src="{{ $image->temporaryUrl() }}" class="img-thumbnail rounded shadow-sm" alt="Preview">
+                                        <img src="{{ $image->temporaryUrl() }}" class="img-thumbnail rounded shadow-sm" style="max-width: 150px;" alt="Preview">
                                     </div>
                                 @else
                                     <div class="alert alert-warning mt-2">

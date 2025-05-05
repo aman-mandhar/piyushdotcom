@@ -201,5 +201,42 @@ class PropertyController extends Controller
         return redirect()->route('properties.index')->with('success', 'Property deleted.');
     }
 
+    public function mySearch(Request $request)
+    {
+        // check authenticated user
+        if (!Auth::check()) {
+            $query = Property::query()->where('status', 'active');
+        } else {
+            $user = Auth::user();
+            $query = Property::query()->where('city_id', $user->city_id)
+                ->where('status', 'active');
+        }
+
+         if ($request->filled('keyword')) {
+            $query->where(function ($q) use ($request) {
+                $q->where('title', 'like', '%' . $request->keyword . '%')
+                  ->orWhere('description', 'like', '%' . $request->keyword . '%')
+                  ->orWhere('location', 'like', '%' . $request->keyword . '%')
+                  ->orWhere('plot_category', 'like', '%' . $request->keyword . '%')
+                  ->orWhere('plot_type', 'like', '%' . $request->keyword . '%')
+                  ->orWhere('property_type', 'like', '%' . $request->keyword . '%')
+                  ->orWhere('facing', 'like', '%' . $request->keyword . '%')
+                  ->orWhere('listing_type', 'like', '%' . $request->keyword . '%');
+            });
+        }
+    
+        if ($request->filled('min-price') && $request->filled('max-price')) {
+            $query->whereBetween('price', [
+                $request->input('min-price'),
+                $request->input('max-price')
+            ]);
+        }
+    
+        $properties = $query->with('city', 'user')->latest()->paginate(10);
+    
+        return view('properties.my-search', compact('properties'));
+    }
+    
+
     
 }

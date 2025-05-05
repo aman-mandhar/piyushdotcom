@@ -29,7 +29,7 @@
                         <a href="{{ route('properties.index') }}" class="nav-item nav-link">Property</a>
                     </div>
                         <div class="navbar-nav ms-auto nav-item dropdown">
-                            <a href="#" class="nav-item nav-link dropdown-toggle" data-bs-toggle="dropdown">Contstruction Directory</a>
+                            <a href="#" class="nav-item nav-link dropdown-toggle" data-bs-toggle="dropdown">Contstruction</a>
                             <div class="dropdown-menu rounded-0 m-0">
                                 <a href="{{route('directory.create')}}" class="dropdown-item">Add your Business</a>
                                 <a href="{{route('directory.index')}}" class="dropdown-item">View Direcory</a>
@@ -70,7 +70,7 @@
                     
                     </div>
                     <a href="{{ route('properties.create') }}" class="btn btn-primary px-3 d-none d-lg-flex">Add Property</a>
-                    
+                    <a href="{{ route('properties.my-search') }}" class="btn btn-secondary px-3 d-none d-lg-flex">Search Property</a>
                 </div>
             </nav>
         </div>
