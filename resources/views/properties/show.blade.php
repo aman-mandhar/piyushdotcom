@@ -138,9 +138,47 @@
                 <p><strong>Name:</strong> {{ $property->user->name }}</p>
                 <p><strong>City:</strong> {{ $property->user->city->name }}</p>
 
+                @if (!Auth::check())
+                    {{-- Guest user --}}
+                    <button data-bs-toggle="modal" data-bs-target="#loginModal">Login</button>
+                    <x-model-login />
+                @else
+                    {{-- Authenticated user --}}
+                    <p>Welcome, {{ Auth::user()->name }}</p>
+                @endif
+                
                 @auth
                     @php
-                        $city_id = $property->city_id;
+                        @if($property->user_id == auth()->user()->id)
+                        <div class="mt-auto d-flex justify-content-between align-items-center">
+                            <p class="text-success">This Property is created by you.</p>
+                            <a href="{{ route('properties.edit', $property->slug) }}" class="btn btn-sm btn-outline-secondary">Edit</a>
+                            <form action="{{ route('properties.destroy', $property->slug) }}" method="POST" class="d-inline-block" onsubmit="return confirm('Are you sure you want to delete this property?');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                            </form>
+                        </div>
+                    @else
+                        <form action="{{ route('calls.store') }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="user_id" value="{{ auth()->id() }}">
+                            <input type="hidden" name="city_id" value="{{ $city_id }}">
+                        
+                            @if(isset($property))
+                                <input type="hidden" name="property_id" value="{{ $property->id }}">
+                                <input type="hidden" name="mobile" value="+919216051212">
+                            @elseif(isset($vehicle))
+                                <input type="hidden" name="vehicle_id" value="{{ $vehicle->id }}">
+                                <input type="hidden" name="mobile" value="+919216051212">
+                            @elseif(isset($directory))
+                                <input type="hidden" name="directory_id" value="{{ $directory->id }}">
+                                <input type="hidden" name="mobile" value="+919216051212">
+                            @endif
+                        
+                            <button type="submit" class="btn btn-outline-success w-100 mt-2">📞 Call Now</button>
+                        </form>
+                    @endif
                     @endphp
                     @if($property->user_id == auth()->user()->id)
                         <div class="mt-auto d-flex justify-content-between align-items-center">
