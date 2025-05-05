@@ -140,8 +140,11 @@
 
                 @if (!Auth::check())
                     {{-- Guest user --}}
-                    <button data-bs-toggle="modal" data-bs-target="#loginModal">Login</button>
-                    <x-model-login />
+                    <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#loginModal">
+                        🔐 Login
+                    </button>
+                
+                    <x-login-modal />
                 @else
                     @if($property->user_id == auth()->user()->id)
                         <div class="mt-auto d-flex justify-content-between align-items-center">
