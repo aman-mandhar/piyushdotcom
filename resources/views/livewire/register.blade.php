@@ -80,27 +80,6 @@
                             </div>
                         </div>
 
-                        <!-- Referral Code(optional) -->
-                        <div class="form-group row">
-                            <label for="ref_id" class="col-md-3 col-form-label">{{ __('Referral (Optional)') }}</label>
-                            <div class="col-md-9">
-                                <select wire:model.lazy="ref_id" id="ref_id" class="form-control">
-                                    <option value="">Select Referral (Optional)</option>
-                                    @foreach($users as $ref)
-                                        <option value="{{ $ref->id }}">{{ $ref->name }}</option>
-                                    @endforeach
-                                </select>
-                                @error('ref_id') <span class="text-danger">{{ $message }}</span> @enderror
-                            </div>
-                        </div>
-
-                        <!-- Referral Name(optional) -->
-                        @if($ref_id)
-                            <div class="form-group row">
-                                <span class="col-md-3">{{ $ref_name }}</span>
-                            </div>
-                        @endif
-
                         <!-- Terms & Conditions -->
                         <div class="form-group row">
                             <div class="col-md-9 offset-md-3">

@@ -6,11 +6,12 @@
 
 @guest
     <x-login-modal />
+    <x-register-modal />
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            var myModal = new bootstrap.Modal(document.getElementById('loginModal'));
-            myModal.show();
+            var loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+            loginModal.show();
         });
     </script>
 @endguest

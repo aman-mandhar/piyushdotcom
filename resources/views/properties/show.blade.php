@@ -148,6 +148,14 @@
                     </button>
                 
                     <x-login-modal />
+                    <x-register-modal />
+
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function () {
+                            var loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+                            loginModal.show();
+                        });
+                    </script>
                 @else
                     @if($property->user_id == auth()->user()->id)
                         <div class="mt-auto d-flex justify-content-between align-items-center">

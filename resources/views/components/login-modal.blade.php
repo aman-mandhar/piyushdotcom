@@ -24,7 +24,16 @@
 
           <div class="modal-footer">
             <button class="btn btn-primary w-100" type="submit">Login</button>
-          </div>
+        
+            <div class="mt-2 text-center">
+                <small>
+                    New user?
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#registerModal" data-bs-dismiss="modal">
+                        Create an account
+                    </a>
+                </small>
+            </div>
+        </div>
         </form>
       </div>
     </div>
