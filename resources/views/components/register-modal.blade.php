@@ -5,16 +5,6 @@
             {{-- Livewire Register Component --}}
             @livewire('register')
 
-            {{-- Login Link in Footer --}}
-            <div class="modal-footer text-center d-block">
-                <small>
-                    Already have an account?
-                    <a href="#" data-bs-toggle="modal" data-bs-target="#loginModal" data-bs-dismiss="modal">
-                        Login
-                    </a>
-                </small>
-            </div>
-
         </div>
     </div>
 </div>
