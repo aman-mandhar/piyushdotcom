@@ -28,7 +28,8 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/universal-dashboard', [DashboardController::class, 'universal'])->name('dashboard.universal');
 
 Route::get('/properties', [PropertyController::class, 'index'])->name('properties.index');
-    
+Route::get('/properties/{property:slug}/show', [PropertyController::class, 'show'])->name('properties.show');
+        
 
 Route::get('/{property:slug}/view', [PropertyController::class, 'view'])->name('properties.view');
 
@@ -46,7 +47,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/properties/{property:slug}/edit', [PropertyController::class, 'edit'])->name('properties.edit');
     Route::put('/properties/{property}', [PropertyController::class, 'update'])->name('properties.update');
     Route::delete('/properties/{property}', [PropertyController::class, 'destroy'])->name('properties.destroy');
-    Route::get('/properties/{property:slug}/show', [PropertyController::class, 'show'])->name('properties.show');
     Route::get('/properties/search', [PropertyController::class, 'search'])->name('properties.search');
     Route::get('/properties/my-properties', [PropertyController::class, 'myProperties'])->name('properties.my-properties');
     Route::get('/properties/show-all/{id}', [PropertyController::class, 'showAll'])->name('properties.show-all');
