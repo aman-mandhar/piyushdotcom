@@ -3,14 +3,20 @@
 @section('title', 'Add New Property')
 
 @section('content')
-    
-@if (!Auth::check())
-    {{-- Guest user --}}
-    <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#loginModal">
-        🔐 Login to Add Property
-    </button>
+
+@guest
     <x-login-modal />
-@else
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var myModal = new bootstrap.Modal(document.getElementById('loginModal'));
+            myModal.show();
+        });
+    </script>
+@endguest
+
+@auth
     @livewire('create-property')
-@endif
+@endauth
+
 @endsection
