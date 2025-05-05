@@ -69,12 +69,8 @@
                         @endif
                     
                     </div>
-                    @auth
-                        <a href="{{ route('properties.create') }}" class="btn btn-primary px-3 d-none d-lg-flex">Add Property</a>
-                    @else
-                        <a href="{{ route('login.form', ['redirect' => route('properties.create')]) }}" class="btn btn-primary px-3 d-none d-lg-flex">Add Property</a>
-                    @endauth
-
+                    <a href="{{ route('properties.create') }}" class="btn btn-primary px-3 d-none d-lg-flex">Add Property</a>
+                    
                 </div>
             </nav>
         </div>
