@@ -1,17 +1,3 @@
-<style>
-    .modal-dialog {
-    max-width: 480px;
-}
-    .modal-content {
-        border-radius: 10px;
-    }
-    .modal-header {
-        border-bottom: none;
-    }
-    .modal-footer {
-        border-top: none;
-    }
-</style>
 <div class="card">
     <div class="card-header text-center">
         {{ __('FREE Signup') }}
