@@ -134,6 +134,9 @@
         <!-- Sidebar: Contact Info -->
         <div class="col-md-4">
             <div class="card p-4 shadow">
+                @php
+                    $city_id = $property->city_id;
+                @endphp
                 <h5 class="mb-3">Contact Seller</h5>
                 <p><strong>Name:</strong> {{ $property->user->name }}</p>
                 <p><strong>City:</strong> {{ $property->user->city->name }}</p>
