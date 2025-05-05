@@ -453,7 +453,7 @@
                 
                         <!-- Negotiable -->
                         <div class="col-md-2">
-                            <label class="form-label fw-semibold">Nagotiable</label>
+                            <label class="form-label fw-semibold">Nagotiabe</label>
                             <select wire:model.lazy="negotiable_price" class="form-control">
                                 <option value="">Select</option>
                                 <option value="Yes">Yes</option>
@@ -533,11 +533,16 @@
                             <label class="form-label fw-semibold">Thumbnail Image</label>
                             <input type="file" wire:model="image" class="form-control">
                             @if ($image)
-                                <div class="mt-3">
-                                    <img src="{{ $image->temporaryUrl() }}" class="img-thumbnail rounded shadow-sm" style="max-width: 150px;" alt="Preview">
-                                </div>
+                                @if (method_exists($image, 'temporaryUrl'))
+                                    <div class="mt-3">
+                                        <img src="{{ $image->temporaryUrl() }}" class="img-thumbnail rounded shadow-sm" alt="Preview">
+                                    </div>
+                                @else
+                                    <div class="alert alert-warning mt-2">
+                                        ⚠️ Preview not available for large file, but it's selected.
+                                    </div>
+                                @endif
                             @endif
-                            @error('image') <small class="text-danger">{{ $message }}</small> @enderror
                         </div>
                 
                         <!-- Media Tips -->
