@@ -115,21 +115,16 @@
 
                         <div class="row g-3">
                             <div class="col-md-4">
-                                <label class="form-label fw-semibold">Plot Category</label>
+                                <label class="form-label fw-semibold">Plot is readt to use for</label>
                                 <select wire:model="plot_category" class="form-control">
                                     <option value="">Select</option>
-                                    <option value="Residential">Residential</option>
+                                    <option value="Residential">Residenceial</option>
                                     <option value="Commercial">Commercial</option>
                                     <option value="Industrial">Industrial</option>
+                                    <option value="Mix">Mix Use</option>
                                 </select>
                             </div>
-                            <div class="col-md-4"><label class="form-label fw-semibold">Plot Type</label><select wire:model="plot_type" class="form-control">
-                                <option value="">Select</option>
-                                <option value="Corner">Corner</option>
-                                <option value="On Road">On Road</option>
-                                <option value="Park Facing">Park Facing</option>
-                                <option value="Normal">Normal</option>
-                            </select></div>
+                            
                             <div class="col-md-4">
                                 <label class="form-label fw-semibold">Plot Number</label>
                                 <input type="text" wire:model="plot_number" class="form-control">
@@ -194,40 +189,38 @@
                                 </div>
 
                                 <!-- Total Area Sq. Feet -->
-                                <div class="col-md-4">
+                                <div class="col-md-4" style="color:#3a007b;">
                                     <label class="form-label fw-semibold">Total Area (auto) – Sq. Feet</label>
                                     <input type="text" x-bind:value="areaSqFt" x-effect="$wire.plot_size = areaSqFt" class="form-control bg-light" readonly>
                                 </div>
 
                                 <!-- Total Area Sq. Yards -->
-                                <div class="col-md-4">
+                                <div class="col-md-4" style="color:#2c6400;">
                                     <label class="form-label fw-semibold">Total Area – Sq. Yards</label>
                                     <input type="text" x-bind:value="areaSqYd" class="form-control bg-light" readonly>
                                 </div>
 
                                 <!-- Total Area Sq. Meters -->
-                                <div class="col-md-4">
+                                <div class="col-md-4" style="color:#7b4000;">
                                     <label class="form-label fw-semibold">Total Area – Sq. Meters</label>
                                     <input type="text" x-bind:value="areaSqM" class="form-control bg-light" readonly>
                                 </div>
                             </div>
 
-                            <div class="col-md-6">
-                                <label class="form-label fw-semibold">Price Per Sq. Ft. If applicable</label>
-                                <input type="number" wire:model="price_per_sqft" class="form-control" step="0.01">
-                            </div>
                         </div>
                     @endif
                 
-                    {{-- House / Apartment / Villa --}}
-                    @if (in_array($property_type, ['House', 'Apartment', 'Villa']))
+                    {{-- House / Flat / Apartment / Villa --}}
+                    @if (in_array($property_type, ['House', 'Flat', 'Apartment', 'Villa']))
                     <h5 class="mb-4 fw-bold text-secondary">🏠 Property Details</h5>
                         <div class="row g-3">
-                            <div class="col-md-6"><label class="form-label fw-semibold">Bedrooms</label><input type="number" wire:model="bedrooms" class="form-control"></div>
-                            <div class="col-md-6"><label class="form-label fw-semibold">Bathrooms</label><input type="number" wire:model="bathrooms" class="form-control"></div>
-                            <div class="col-md-6"><label class="form-label fw-semibold">Balconies</label><input type="number" wire:model="balconies" class="form-control"></div>
-                            <div class="col-md-6"><label class="form-label fw-semibold">Floor Number<i>(for flats only)</i></label><input type="number" wire:model="floor_number" class="form-control"></div>
-                            <div class="col-md-6"><label class="form-label fw-semibold">Total Builtup Floors</label><input type="number" wire:model="total_floors" class="form-control"></div>
+                            <div class="col-md-3" style="color:#000548; background-color: #ffffff; margin-top: 30px; margin-bottom: 10px;">
+                                <label class="form-label fw-semibold">Bedrooms</label><input type="number" wire:model="bedrooms" class="form-control"></div>
+                            <div class="col-md-3" style="color:#00651f; background-color: #ffffff; margin-top: 30px; margin-bottom: 10px;">
+                                <label class="form-label fw-semibold">Bathrooms</label><input type="number" wire:model="bathrooms" class="form-control"></div>
+                            <div class="col-md-3" style="color:#ff0000; background-color: #ffffff margin-top: 30px; margin-bottom: 10px;;">
+                                <label class="form-label fw-semibold">Balconies</label><input type="number" wire:model="balconies" class="form-control"></div>
+                            <div class="col-md-3"><label class="form-label fw-semibold">Total Builtup Floors</label><input type="number" wire:model="total_floors" class="form-control"></div>
                             <div class="col-md-6">
                                 <label class="form-label fw-semibold">Furnishing Status</label>
                                 <select wire:model="furnishing_status" class="form-control">
@@ -237,6 +230,7 @@
                                     <option value="Unfurnished">Unfurnished</option>
                                 </select>
                             </div>
+                            <div class="col-md-6"><label class="form-label fw-semibold">Flat / Floor Number<i>(for flats only)</i></label><input type="number" wire:model="floor_number" class="form-control"></div>
                         </div>
                     @endif
                 
@@ -283,7 +277,7 @@
                                     <option value="Other">Other</option>
                                 </select>
                             </div>
-                            <<div 
+                            <div 
                                 x-data="{
                                     front: @entangle('shop_front').defer,
                                     back: @entangle('shop_back').defer,
@@ -410,27 +404,33 @@
                 <div class="container-fluid">
                     <h5 class="mb-4 fw-bold text-secondary">📍 Location & Pricing</h5>
                     <div class="row g-3">
-                        <!-- City -->
-                        <div class="col-md-6">
-                            <label class="form-label fw-semibold">City / Nearby City</label>
-                            <select wire:model="city_id" class="form-control">
-                                <option value="">Select City</option>
-                                @foreach ($cities as $city)
-                                    <option value="{{ $city->id }}">{{ $city->name }}</option>
+                        <div class="col-md-4"><label class="form-label fw-semibold">Property's Advantage</label><select wire:model="plot_type" class="form-control">
+                            <option value="">Select</option>
+                            <option value="Corner">Corner</option>
+                            <option value="On Road">On Road</option>
+                            <option value="Park Facing">Park Facing</option>
+                            <option value="Normal">Normal</option>
+                        </select></div>
+                        <!-- Front Facing : -->
+                        <div class="col-md-4">
+                            <label class="form-label fw-semibold">Front Facing</label>
+                            <select wire:model="facing" class="form-control">
+                                <option value="">Select Side</option>
+                                @foreach ($directions as $direction)
+                                    <option value="{{ $direction }}">{{ $direction }}</option>
                                 @endforeach
                             </select>
-                            @error('city_id') <small class="text-danger">{{ $message }}</small> @enderror
                         </div>
-                
+                        
                         <!-- Location -->
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <label class="form-label fw-semibold">Location (Locality)</label>
                             <input type="text" wire:model="location" class="form-control">
                             @error('location') <small class="text-danger">{{ $message }}</small> @enderror
                         </div>
 
                         <!--Price In -->
-                        <div class="col-md-3">
+                        <div class="col-md-1">
                             <label class="form-label fw-semibold">Price In</label>
                             <select wire:model="price_in" class="form-control">
                                 <option value="">Select</option>
@@ -446,37 +446,40 @@
                 
                         <!-- Price -->
                         <div class="col-md-3">
-                            <label class="form-label fw-semibold">Price</label>
+                            <label class="form-label fw-semibold">Demand Price</label>
                             <input type="number" wire:model="price" step="0.01" class="form-control">
                             @error('price') <small class="text-danger">{{ $message }}</small> @enderror
                         </div>
                 
                         <!-- Negotiable -->
-                        <div class="col-md-3">
-                            <label class="form-label fw-semibold">Is it Negotiable</label>
-                            <select wire:model="negotiable_price" class="form-control">
+                        <div class="col-md-2">
+                            <label class="form-label fw-semibold">Nagotiable</label>
+                            <select wire:model.lazy="negotiable_price" class="form-control">
                                 <option value="">Select</option>
                                 <option value="Yes">Yes</option>
                                 <option value="No">No</option>
                             </select>
                         </div>
 
+                        @if($negotiable_price === 'Yes')
                         <!--Market Price -->
-                        <div class="col-md-3">
-                            <label class="form-label fw-semibold">Current Market Price</label>
-                            <input type="number" wire:model="market_price" step="0.01" class="form-control">
-                            @error('market_price') <small class="text-danger">{{ $message }}</small> @enderror
-                        </div>
+                            <div class="col-md-3">
+                                <label class="form-label fw-semibold">Approximate Last Negotiable Price</label>
+                                <input type="number" wire:model="market_price" step="0.01" class="form-control">
+                                @error('market_price') <small class="text-danger">{{ $message }}</small> @enderror
+                            </div>
+                        @endif
                 
-                        <!-- Facing -->
+                        <!-- City -->
                         <div class="col-md-4">
-                            <label class="form-label fw-semibold">Front Facing</label>
-                            <select wire:model="facing" class="form-control">
-                                <option value="">Select</option>
-                                @foreach ($directions as $direction)
-                                    <option value="{{ $direction }}">{{ $direction }}</option>
+                            <label class="form-label fw-semibold">City / Nearby City</label>
+                            <select wire:model="city_id" class="form-control">
+                                <option value="">Select City</option>
+                                @foreach ($cities as $city)
+                                    <option value="{{ $city->id }}">{{ $city->name }}</option>
                                 @endforeach
                             </select>
+                            @error('city_id') <small class="text-danger">{{ $message }}</small> @enderror
                         </div>
                 
                         <!-- Total Area (Label Based) -->

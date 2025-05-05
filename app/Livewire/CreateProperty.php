@@ -35,10 +35,10 @@ class CreateProperty extends Component
     {
         $this->cities = City::orderBy('name')->get();
         $this->property_types = [
-            'Plot', 'House', 'Apartment', 'Villa', 'Office', 'Shop', 'Agriculture Land'
+            'Plot', 'House', 'Flat', 'Apartment', 'Villa', 'Office', 'Shop', 'Agriculture Land'
         ];
         $this->listing_types = [
-            'Sale', 'Rent', 'Lease', 'Collaborate'
+            'Sale', 'Rent', 'Lease'
         ];
         $this->plot_categories = [
             'Residential', 'Commercial', 'Industrial'
@@ -155,7 +155,7 @@ class CreateProperty extends Component
                 'price_per_sqft' => 'nullable|numeric',
             ]);
         }
-        if (in_array($this->property_type, ['House', 'Apartment', 'Villa'])) {
+        if (in_array($this->property_type, ['House', 'Flat', 'Apartment', 'Villa'])) {
             $this->validate([
                 'floor_number' => 'nullable|string|max:255',
                 'bedrooms' => 'nullable|integer|min:1',
