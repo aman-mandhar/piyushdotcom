@@ -27,6 +27,8 @@ return new class extends Migration
 
             // Property Details
             $table->string('property_address');
+            $table->decimal('latitude', 10, 8)->nullable();
+            $table->decimal('longitude', 11, 8)->nullable();
             $table->enum('court_case', ['Yes', 'No']);
             $table->string('court_case_details')->nullable();
             $table->enum('current_status', ['Occupied', 'Vacant', 'Under Construction', 'Under Renovation', 'Under Dispute', 'Rented', 'Other']);

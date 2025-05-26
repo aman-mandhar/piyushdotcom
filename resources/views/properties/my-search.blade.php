@@ -29,7 +29,7 @@
             </div>
             <div class="col-md-3">
                 <select name="price_in_unit" class="form-select">
-                    <option value="Lakh">Lakh</option>
+                    <option value="">Select One</option>
                     @foreach(['Thousand', 'Lakh', 'Crore', 'Millon', 'Billon', 'Trillion'] as $unit)
                         <option value="{{ $unit }}" {{ request('price_in_unit') == $unit ? 'selected' : '' }}>
                             {{ $unit }}
@@ -60,7 +60,10 @@
                         <img src="https://via.placeholder.com/300x200" class="img-fluid rounded-start" alt="No Image">
                     @endif
                 </div>
-                <div class="col-md-8">
+                <div class="col-md-4">
+                    <p>{{ $property->description }}</p>
+                </div>
+                <div class="col-md-4">
                     <div class="card-body">
                         <h5 class="card-title">{{ $property->title }}</h5>
                         <p class="card-text">

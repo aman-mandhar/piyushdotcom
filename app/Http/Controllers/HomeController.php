@@ -6,11 +6,12 @@ use App\Models\Property;
 use App\Models\City;
 use Illuminate\Http\Request;
 
+
 class HomeController extends Controller
 {
     public function index()
     {
-        $properties = Property::all();
+        $properties = Property::whereNotNull('latitude')->whereNotNull('longitude')->with('city')->get();
         $cities = City::all();
         return view('home', compact('properties', 'cities'));
     }

@@ -25,6 +25,8 @@ class Property extends Model
 
         // Property Details
         'property_address',
+        'latitude',
+        'longitude',
         'court_case',
         'court_case_details',
         'current_status',

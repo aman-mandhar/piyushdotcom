@@ -28,6 +28,18 @@
                             <input type="textarea" wire:model="property_address" class="form-control bg-light" required>
                         </div>
 
+                        <!-- Longitude & Latitude -->
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Longitude</label>
+                            <input type="text" wire:model="longitude" class="form-control shadow-sm" placeholder="e.g. 77.5946">
+                            @error('longitude') <small class="text-danger">{{ $message }}</small> @enderror
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Latitude</label>
+                            <input type="text" wire:model="latitude" class="form-control shadow-sm" placeholder="e.g. 12.9716">
+                            @error('latitude') <small class="text-danger">{{ $message }}</small> @enderror
+                        </div>
+
                         <!--Court Case -->
                         <div class="col-md-4">
                             <label class="form-label fw-semibold">Is any Court Case about this property?</label>

@@ -14,7 +14,7 @@ class CreateProperty extends Component
    // Common Fields 
     public $property_title, $slug;
     public $owner_name, $owner_contact, $owner_email, $owner_address, $owner_nationality, $owner_type, $owner_document_type;
-    public $property_address, $court_case, $court_case_details, $current_status, $listing_type, $property_type, $video_link;
+    public $property_address, $latitude, $longitude, $court_case, $court_case_details, $current_status, $listing_type, $property_type, $video_link;
     // Dynamic Fields
     public $measurement_unit, $plot_type, $plot_number;
     public $plot_category, $plot_front, $plot_side_1, $plot_side_2, $plot_back, $plot_size, $price_per_sqft;
@@ -31,6 +31,7 @@ class CreateProperty extends Component
 
     // Mount Variables
     public $cities, $property_types, $listing_types, $plot_categories, $furnishing_statuses, $directions, $prices_in;
+    
     public function mount()
     {
         $this->cities = City::orderBy('name')->get();
@@ -118,6 +119,8 @@ class CreateProperty extends Component
                 'owner_type' => 'nullable',
                 'owner_document_type' => 'nullable',
                 'property_address' => 'required|string|max:255',
+                'latitude' => 'nullable|numeric',
+                'longitude' => 'nullable|numeric',
                 'court_case' => 'required',
                 'court_case_details' => 'nullable|string|max:255',
                 'current_status' => 'required',
@@ -212,6 +215,8 @@ class CreateProperty extends Component
             'owner_type' => $this->owner_type,
             'owner_document_type' => $this->owner_document_type,
             'property_address' => $this->property_address,
+            'latitude' => $this->latitude,
+            'longitude' => $this->longitude,
             'court_case' => $this->court_case,
             'court_case_details' => $this->court_case_details,
             'current_status' => $this->current_status,

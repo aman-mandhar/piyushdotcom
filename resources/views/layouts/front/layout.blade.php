@@ -43,6 +43,18 @@
 
     @livewireStyles
     @yield('seo') {{-- Extra SEO per-page --}}
+    
+        <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        #map {
+            height: 600px;
+            width: 100%;
+            border: 2px solid #198754;
+            border-radius: 10px;
+        }
+    </style>
+
 </head>
 
 <body>
@@ -84,6 +96,6 @@
 
     <script src="https://www.google.com/recaptcha/api.js?render={{ config('services.recaptcha.key') }}"></script>
     @livewireScripts
-
+@yield('scripts')
 </body>
 </html>

@@ -643,5 +643,97 @@
     </div>
 </div>
 <!-- Testimonial End -->
+<h2 class="text-center mb-4">All Active Properties on Map</h2>
 
+    <!-- City Filter Dropdown -->
+    <div class="row justify-content-center mb-3">
+        <div class="col-md-6">
+            <label for="cityFilter" class="form-label fw-bold">Filter by City:</label>
+            <select id="cityFilter" class="form-select">
+                <option value="">-- All Cities --</option>
+                @foreach ($cities as $city)
+                    <option value="{{ $city->name }}">{{ $city->name }}</option>
+                @endforeach
+            </select>
+        </div>
+    </div>
+
+    <!-- Map -->
+    <div id="map"></div>
+</div>
+@endsection
+
+@section('scripts')
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script>
+    const map = L.map('map').setView([22.9734, 78.6569], 5);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    const properties = @json($properties);
+    let markers = [];
+
+    function renderMarkers(city = '') {
+        // Remove existing markers
+        markers.forEach(marker => map.removeLayer(marker));
+        markers = [];
+
+        properties.forEach(property => {
+            if (!property.latitude || !property.longitude) return;
+            if (city && property.city?.name !== city) return;
+
+            const popupContent = `
+                <div style="max-width: 250px;">
+                    <img src="/storage/${property.image}" alt="${property.property_title}" style="width:100%; height:auto; border-radius:5px; margin-bottom:5px;">
+                    <strong>${property.property_title}</strong><br>
+                    ₹${property.price} ${property.price_in_unit}<br>
+                    ${property.property_address}<br>
+                    <a href="/properties/${property.id}" class="btn btn-sm btn-outline-success mt-2">View Details</a>
+                </div>
+            `;
+
+            const marker = L.marker([property.latitude, property.longitude])
+                .addTo(map)
+                .bindPopup(popupContent);
+
+            marker.on('mouseover', function () {
+                this.openPopup();
+            });
+
+            marker.on('mouseout', function () {
+                this.closePopup();
+            });
+
+            marker.on('click', function () {
+                map.setView([property.latitude, property.longitude], 16); // Zoom in on click
+            });
+
+            markers.push(marker);
+        });
+    }
+
+    // Initial load
+    renderMarkers();
+
+    // Dropdown filter + auto zoom
+    document.getElementById('cityFilter').addEventListener('change', function () {
+        const selectedCity = this.value;
+
+        if (selectedCity) {
+            const match = properties.find(p => p.city?.name === selectedCity && p.latitude && p.longitude);
+            if (match) {
+                map.setView([match.latitude, match.longitude], 13);
+            }
+        } else {
+            map.setView([22.9734, 78.6569], 5);
+        }
+
+        renderMarkers(selectedCity);
+    });
+</script>
 @endsection
