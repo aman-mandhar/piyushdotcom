@@ -644,9 +644,6 @@
 </div>
 <!-- Testimonial End -->
 <h2 class="text-center mb-4">All Active Properties on Map</h2>
-    <pre>
-        {{ json_encode($properties, JSON_PRETTY_PRINT) }}
-    </pre>
     <!-- City Filter Dropdown -->
     <div class="row justify-content-center mb-3">
         <div class="col-md-6">

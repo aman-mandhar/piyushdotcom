@@ -11,8 +11,13 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $properties = Property::whereNotNull('latitude')->whereNotNull('longitude')->with('city')->get();
+        $properties = Property::whereNotNull('latitude')
+            ->whereNotNull('longitude')
+            ->with('city')
+            ->get();
+
         $cities = City::all();
+
         return view('home', compact('properties', 'cities'));
     }
 
