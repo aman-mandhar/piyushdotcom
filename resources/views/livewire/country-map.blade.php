@@ -23,9 +23,10 @@
         </div>
 
         <!-- Map -->
-        <div id="map" style="height: 500px; border-radius: 10px;"></div>
+        <div id="map" style="height: 780px; width: 1920; border-radius: 10px;"></div>
     </div>
 </div>
+
 @push('scripts')
 <script>
     function mapHandler({ properties, defaultLat, defaultLng }) {
@@ -34,6 +35,8 @@
             markers: [],
             selectedCity: '',
             properties,
+            popupInterval: null,
+            popupIndex: 0,
 
             initMap() {
                 this.map = L.map('map').setView([defaultLat, defaultLng], 5);
@@ -42,6 +45,7 @@
                     attribution: '&copy; OpenStreetMap contributors'
                 }).addTo(this.map);
                 this.renderMarkers();
+                this.startAutoPopup();
             },
 
             renderMarkers() {
@@ -79,6 +83,21 @@
                 }
             },
 
+            startAutoPopup() {
+                if (this.popupInterval) clearInterval(this.popupInterval);
+                this.popupInterval = setInterval(() => {
+                    if (!this.markers.length) return;
+                    this.markers.forEach(m => m.closePopup());
+                    const marker = this.markers[this.popupIndex % this.markers.length];
+                    marker.openPopup();
+                    this.map.setView(marker.getLatLng(), this.map.getZoom(), {
+                        animate: true,
+                        duration: 0.5,
+                    });
+                    this.popupIndex++;
+                }, 3000);
+            },
+
             filterMarkers() {
                 const match = this.properties.find(p => p.city === this.selectedCity && p.city_latitude && p.city_longitude);
                 if (match) {
@@ -87,18 +106,9 @@
                     this.map.setView([defaultLat, defaultLng], 5);
                 }
                 this.renderMarkers();
+                this.startAutoPopup();
             }
         }
     }
 </script>
 @endpush
-
-
-<!-- 
-    This code is a Livewire component for displaying a map with markers for properties.
-    It includes a dropdown to filter properties by city and uses Leaflet for the map functionality.
-    The map initializes with a default view and updates markers based on the selected city.
-    The markers display property details and allow users to navigate to the property details page.
-    The component is designed to be responsive and user-friendly, providing a clear overview of properties on a map.
-    The map is styled with a border and rounded corners for better aesthetics.
-    -->
