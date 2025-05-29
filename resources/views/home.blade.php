@@ -696,7 +696,7 @@
                 </div>
             `;
 
-            const marker = L.marker([property.city_latitude, property.city_longitude])
+            const marker = L.marker([property.latitude, property.longitude])
                 .addTo(map)
                 .bindPopup(popupContent);
 
