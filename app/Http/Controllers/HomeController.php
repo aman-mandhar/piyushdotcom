@@ -37,12 +37,12 @@ class HomeController extends Controller
         $cur_user = Auth::check() ? Auth::user() : null;
         if ($cur_user == null) {
             $user = null;
-            $default_latitude = 31.1471;
-            $default_longitude = 75.3412;
+            $default_latitude = 20.5937;
+            $default_longitude = 78.9629;
         } else {
             $user = User::where('id', $cur_user->id)->first()->load('city');
-            $default_latitude = $user->city->city_latitude; 
-            $default_longitude = $user->city->city_longitude;
+            $default_latitude = $user->city->country_latitude; 
+            $default_longitude = $user->city->country_longitude;
         }
         $allProperties = Property::with('city')->where('status', 'active')->get();
 
