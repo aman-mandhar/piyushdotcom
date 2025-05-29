@@ -692,11 +692,11 @@
                     <strong>${property.property_title}</strong><br>
                     ₹${property.price} ${property.price_in_unit}<br>
                     ${property.property_address}<br>
-                    <a href="/properties/${property.id}" class="btn btn-sm btn-outline-success mt-2">View Details</a>
+                    <a href="/properties/${property.slug}/show" class="btn btn-sm btn-outline-success mt-2">View Details</a>
                 </div>
             `;
 
-            const marker = L.marker([property.latitude, property.longitude])
+            const marker = L.marker([property.city_latitude, property.city_longitude])
                 .addTo(map)
                 .bindPopup(popupContent);
 
@@ -709,7 +709,7 @@
             });
 
             marker.on('click', function () {
-                map.setView([property.latitude, property.longitude], 16); // Zoom in on click
+                window.location.href = `/properties/${property.slug}/show`;
             });
 
             markers.push(marker);
