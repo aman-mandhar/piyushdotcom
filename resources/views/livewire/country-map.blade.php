@@ -1,3 +1,15 @@
+<style>
+    #map {
+        height: 80vh; /* 80% of the viewport height */
+        border-radius: 10px;
+    }
+
+    @media (max-width: 768px) {
+        #map {
+            height: 400px;
+        }
+    }
+</style>
 <div>
     <div 
         x-data="mapHandler({ 
@@ -23,7 +35,7 @@
         </div>
 
         <!-- Map -->
-        <div id="map" style="height: 780px; width: 1920; border-radius: 10px;"></div>
+        <div id="map"></div>
     </div>
 </div>
 
