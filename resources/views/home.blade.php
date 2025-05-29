@@ -683,7 +683,7 @@
         markers = [];
 
         properties.forEach(property => {
-            if (!property.latitude || !property.longitude) return;
+            if (!property.city_latitudelatitude || !property.city_longitude) return;
             if (city && property.city !== city) return;
 
             const popupContent = `
