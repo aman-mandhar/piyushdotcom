@@ -203,6 +203,14 @@ class CreateProperty extends Component
         }
 
         $imagePath = $this->image ? $this->image->store('properties', 'public') : null;
+        if ($this->latitude === null || $this->longitude === null) {
+            $city = City::find($this->city_id);
+            if ($city) {
+                $this->latitude = $city->city_latitude ?? 0.0; // Default value if not provided
+                $this->longitude = $city->city_longitude ?? 0.0; // Default value if not provided
+            }
+        }
+        // Create the property
         Property::create([
             'user_id' => auth()->id(),
             'property_title' => $this->property_title,
