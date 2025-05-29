@@ -14,6 +14,16 @@ return new class extends Migration
         Schema::create('cities', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('city_latitude')->nullable();
+            $table->string('city_longitude')->nullable();
+            $table->string('state')->nullable();
+            $table->string('state_latitude')->nullable();
+            $table->string('state_longitude')->nullable();
+            $table->string('country')->nullable();
+            $table->string('country_latitude')->nullable();
+            $table->string('country_longitude')->nullable();
+            $table->string('pincode')->nullable();
+            $table->string('slug')->unique();
             $table->timestamps();
         });
     }

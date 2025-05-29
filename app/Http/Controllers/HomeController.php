@@ -4,22 +4,53 @@ namespace App\Http\Controllers;
 
 use App\Models\Property;
 use App\Models\City;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+
 
 
 class HomeController extends Controller
 {
     public function index()
     {
-        $properties = Property::whereNotNull('latitude')
-            ->whereNotNull('longitude')
-            ->with('city')
+        $properties = DB::table('properties')
+            ->join('cities', 'properties.city_id', '=', 'cities.id')
+            ->select(
+                'properties.*', 
+                'cities.name as city',
+                'cities.city_latitude',
+                'cities.city_longitude',
+                'cities.state',
+                'cities.state_latitude',
+                'cities.state_longitude',
+                'cities.country',
+                'cities.country_latitude',
+                'cities.country_longitude',
+                'cities.pincode'
+            )
+            ->where('properties.status', 'active')
             ->get();
 
         $cities = City::all();
+        $cur_user = Auth::check() ? Auth::user() : null;
+        if ($cur_user == null) {
+            $user = null;
+            $default_latitude = 20.5937;
+            $default_longitude = 78.9629;
+        } else {
+            $user = User::where('id', $cur_user->id)->first()->load('city');
+            $default_latitude = $user->city->city_latitude; 
+            $default_longitude = $user->city->city_longitude;
+        }
+        $allProperties = Property::with('city')->where('status', 'active')->get();
 
-        return view('home', compact('properties', 'cities'));
-    }
+        
+
+        return view('home', compact('properties', 'cities', 'user', 'default_latitude', 'default_longitude', 'allProperties'));
+    }   
+      
 
     public function search(Request $request)
     {

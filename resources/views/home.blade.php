@@ -214,14 +214,14 @@
                 <div class="row g-4">
                     @if($properties->count())
                         <div class="row g-4">
-                            @foreach($properties as $property)
+                            @foreach($allProperties as $property)
                                 <div class="col-md-6 col-lg-4">
                                     <div class="card h-100 shadow-sm">
                                         @if($property->image)
                                             <img src="{{ asset('storage/' . $property->image) }}" class="card-img-top" alt="Image of {{ $property->title }}" style="height: 200px; object-fit: cover;">
                                         @endif
                                         <div class="card-body d-flex flex-column">
-                                            <h5 class="card-title">{{ $property->title }}</h5>
+                                            <h5 class="card-title">{{ $property->property_title }}</h5>
                                             <p class="mb-1"><strong>Location:</strong> {{ $property->location }}, {{ $property->city->name }}</p>
                                             <p class="mb-1"><strong>Price:</strong> ₹{{ number_format($property->price) }} {{ $property->price_in_unit }}</p>
                                             <p class="mb-1"><strong>Type:</strong> {{ $property->property_type }} | {{ $property->listing_type }}</p>
@@ -667,7 +667,7 @@
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
 <script>
-    const map = L.map('map').setView([31.326015, 75.576180], 5);
+    const map = L.map('map').setView([{{ $default_latitude }}, {{ $default_longitude }}], 5);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
@@ -684,7 +684,7 @@
 
         properties.forEach(property => {
             if (!property.latitude || !property.longitude) return;
-            if (city && property.city?.name !== city) return;
+            if (city && property.city !== city) return;
 
             const popupContent = `
                 <div style="max-width: 250px;">

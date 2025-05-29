@@ -124,12 +124,12 @@ class Property extends Model
     // 🔗 Relationships
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function city()
     {
-        return $this->belongsTo(City::class);
+        return $this->belongsTo(City::class, 'city_id');
     }
 
     // 📊 Scopes
@@ -181,16 +181,6 @@ class Property extends Model
     public function scopeWithoutCourtCase($query)
     {
         return $query->where('court_case', 'No');
-    }
-
-    public function scopeWithWaterConnection($query)
-    {
-        return $query->where('shop_with_water_connection', true);
-    }
-
-    public function scopeWithoutWaterConnection($query)
-    {
-        return $query->where('shop_with_water_connection', false);
     }
 
     public function scopeWithImage($query)
