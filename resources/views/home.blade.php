@@ -644,10 +644,7 @@
 </div>
 <!-- Testimonial End -->
 <h2 class="text-center mb-4">All Active Properties on Map</h2>
-    <pre>
-        {{ json_encode($properties, JSON_PRETTY_PRINT) }}
-    </pre>
-    <!-- City Filter Dropdown -->
+<!-- City Filter Dropdown -->
     <div class="row justify-content-center mb-3">
         <div class="col-md-6">
             <label for="cityFilter" class="form-label fw-bold">Filter by City:</label>
@@ -670,7 +667,7 @@
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
 <script>
-    const map = L.map('map').setView([22.9734, 78.6569], 5);
+    const map = L.map('map').setView([31.326015, 75.576180], 5);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
@@ -732,7 +729,7 @@
                 map.setView([match.latitude, match.longitude], 13);
             }
         } else {
-            map.setView([22.9734, 78.6569], 5);
+            map.setView([31.326015, 75.576180], 5);
         }
 
         renderMarkers(selectedCity);
