@@ -65,6 +65,7 @@
     </div>
 </div>
 <!-- Search End -->
+@livewire('country-map')
 
 
 <!-- Category Start -->
@@ -160,8 +161,6 @@
     </div>
 </div>
 <!-- Category End -->
-
-
 <!-- About Start -->
 <div class="container-xxl py-5">
     <div class="container">
@@ -643,5 +642,4 @@
     </div>
 </div>
 <!-- Testimonial End -->
-@livewire('country-map')
 @endsection
