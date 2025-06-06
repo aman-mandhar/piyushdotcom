@@ -61,9 +61,6 @@
                 <button wire:click="nextStep" class="btn btn-primary mt-3">Next</button>
             @endif
 
-            {{-- Error Message --}}
-
-
 
             {{-- Step 2 --}}
             @if($step === 2)

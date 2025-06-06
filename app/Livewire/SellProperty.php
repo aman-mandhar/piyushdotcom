@@ -115,10 +115,11 @@ class SellProperty extends Component
         }
     }
 
+    public $step1;
     public function nextStep()
     {
         if ($this->step === 1) {
-            $this->validate([
+            $this->step1 = $this->validate([
                 'listing_type_id' => 'required|exists:listing_types,id',
                 'property_type_id' => 'required|exists:property_types,id',
             ]);
@@ -248,7 +249,7 @@ class SellProperty extends Component
                     'plot.plot_side_2' => 'nullable|numeric',
                     'plot.plot_size' => 'required|numeric',
                     'plot.use_as' => 'required|string',
-                    'plot.advantage' => 'nullable|string',
+                    'advantage' => 'nullable|string',
                 ]);
                 break;
             case 2:
@@ -279,6 +280,10 @@ class SellProperty extends Component
             case 7:
                 $this->validate([
                     'agriculture.land_type' => 'required|string',
+                    'agriculture.land_area_size' => 'required|numeric',
+                    'agriculture.land_area_units' => 'required|string',
+                    'agriculture.land_facing' => 'required|string',
+                    'image' => 'nullable|image|max:2048',
                 ]);
                 break;
             case 8:

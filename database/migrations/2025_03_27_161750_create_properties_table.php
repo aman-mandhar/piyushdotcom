@@ -49,15 +49,26 @@ return new class extends Migration
                 $table->decimal('plot_size', 12, 2)->nullable();
                 $table->enum('plot_area_units', ['Sq. Feet', 'Sq. Meters', 'Sq. Yards', 'Marla','Kanal'])->nullable()->default('Sq. Feet');
                 $table->enum('use_as', ['Residential', 'Commercial', 'Industrial', 'Mix'])->nullable();
+                $table->enum('advantage', ['Corner', 'On Road', 'Park Facing', 'Normal'])->nullable();
+                $table->string('image')->nullable(); // Thumbnail
                 $table->timestamps();
             });
         }
         Schema::create('houses', function (Blueprint $table) {
             $table->id();
             $table->string('house_type')->nullable(); // e.g. 'Independent', 'Duplex', 'Triplex'
-            $table->string('house_area_size')->nullable();
             $table->enum('house_area_units', ['Sq. Feet', 'Sq. Meters', 'Sq. Yards', 'Marla','Kanal'])->nullable();
+            $table->string('house_area_size')->nullable();
+            $table->date('construction_year')->nullable(); // Year of construction
+            $table->date('renovation_year')->nullable(); // Year of last renovation
+            $table->enum('house_bedrooms', ['1', '2', '3', '4', '5+'])->nullable();
+            $table->enum('house_bathrooms', ['1', '2', '3', '4', '5+'])->nullable();
+            $table->enum('house_balconies', ['1', '2', '3', '4', '5+'])->nullable();
+            $table->enum('house_floors', ['1', '2', '3', '4', '5+'])->nullable();
             $table->enum('house_facing', ['North', 'North-East', 'North-West', 'South', 'South-East', 'South-West', 'East', 'West', 'N/A'])->nullable()->default('N/A');
+            $table->enum('house_furnishing_status', ['Furnished', 'Semi-Furnished', 'Unfurnished'])->nullable();
+            $table->enum('advantage', ['Corner', 'On Road', 'Park Facing', 'Normal'])->nullable();
+            $table->string('image')->nullable(); // Thumbnail
             $table->timestamps();
         });
         Schema::create('apartments', function (Blueprint $table) {
@@ -65,7 +76,30 @@ return new class extends Migration
             $table->string('apartment_type')->nullable(); // e.g. '1BHK', '2BHK', '3BHK', '4BHK'
             $table->string('apartment_area_size')->nullable();
             $table->enum('apartment_area_units', ['Sq. Feet', 'Sq. Meters', 'Sq. Yards', 'Marla','Kanal'])->nullable();
+            $table->enum('apartment_floor', ['Ground', '1st', '2nd', '3rd', '4th', '5th', '6th', '7th', '8th', '9th', '10th'])->nullable();
+            $table->enum('apartment_bedrooms', ['1', '2', '3', '4', '5+'])->nullable();
+            $table->enum('apartment_bathrooms', ['1', '2', '3', '4', '5+'])->nullable();
+            $table->enum('apartment_balconies', ['1', '2', '3', '4', '5+'])->nullable();
+            $table->enum('apartment_floors', ['1', '2', '3', '4', '5+'])->nullable();
+            $table->enum('apartment_furnishing_status', ['Furnished', 'Semi-Furnished', 'Unfurnished'])->nullable();
+            $table->enum('apartment_view', ['Park', 'Road', 'City', 'Sea', 'Mountain', 'Garden', 'Pool', 'Other'])->nullable();
+            $table->enum('apartment_security', ['Yes', 'No'])->nullable()->default('Yes');
+            $table->enum('apartment_elevator', ['Yes', 'No'])->nullable()->default('Yes');
+            $table->enum('apartment_parking', ['Yes', 'No'])->nullable()->default('Yes');
+            $table->enum('apartment_power_backup', ['Yes', 'No'])->nullable()->default('Yes');
+            $table->enum('apartment_water_supply', ['Yes', 'No'])->nullable()->default('Yes');
+            $table->enum('apartment_gas_supply', ['Yes', 'No'])->nullable()->default('Yes');
+            $table->enum('apartment_waste_management', ['Yes', 'No'])->nullable()->default('Yes');
+            $table->enum('apartment_gym', ['Yes', 'No'])->nullable()->default('No');
+            $table->enum('apartment_swimming_pool', ['Yes', 'No'])->nullable()->default('No');
+            $table->enum('apartment_clubhouse', ['Yes', 'No'])->nullable()->default('No');
+            $table->enum('apartment_play_area', ['Yes', 'No'])->nullable()->default('No');
+            $table->enum('apartment_security_guard', ['Yes', 'No'])->nullable()->default('Yes');
+            $table->enum('apartment_fire_safety', ['Yes', 'No'])->nullable()->default('Yes');
+            $table->enum('apartment_cctv', ['Yes', 'No'])->nullable()->default('Yes');
+            $table->enum('apartment_intercom', ['Yes', 'No'])->nullable()->default('Yes');
             $table->enum('apartment_facing', ['North', 'North-East', 'North-West', 'South', 'South-East', 'South-West', 'East', 'West', 'N/A'])->nullable()->default('N/A');
+            $table->string('image')->nullable(); // Thumbnail
             $table->timestamps();
         });
         Schema::create('villas', function (Blueprint $table) {
@@ -74,6 +108,16 @@ return new class extends Migration
             $table->string('villa_area_size')->nullable();
             $table->enum('villa_area_units', ['Sq. Feet', 'Sq. Meters', 'Sq. Yards', 'Marla','Kanal'])->nullable();
             $table->enum('villa_facing', ['North', 'North-East', 'North-West', 'South', 'South-East', 'South-West', 'East', 'West', 'N/A'])->nullable()->default('N/A');
+            $table->enum('villa_bedrooms', ['1', '2', '3', '4', '5+'])->nullable();
+            $table->enum('villa_bathrooms', ['1', '2', '3', '4', '5+'])->nullable();
+            $table->enum('villa_balconies', ['1', '2', '3', '4', '5+'])->nullable();
+            $table->enum('villa_floors', ['1', '2', '3', '4', '5+'])->nullable();
+            $table->enum('villa_furnishing_status', ['Furnished', 'Semi-Furnished', 'Unfurnished'])->nullable();
+            $table->enum('villa_swimming_pool', ['Yes', 'No'])->nullable()->default('No');
+            $table->enum('villa_garden', ['Yes', 'No'])->nullable()->default('No');
+            $table->enum('villa_parking', ['Yes', 'No'])->nullable()->default('Yes');
+            $table->enum('advantage', ['Corner', 'On Road', 'Park Facing', 'Normal'])->nullable();
+            $table->string('image')->nullable(); // Thumbnail
             $table->timestamps();
         });
         Schema::create('offices', function (Blueprint $table) {
@@ -83,6 +127,20 @@ return new class extends Migration
             $table->enum('office_area_units', ['Sq. Feet', 'Sq. Meters', 'Sq. Yards'])->nullable();
             $table->string('floor_number')->nullable(); // Changed from integer to string
             $table->enum('office_facing', ['North', 'North-East', 'North-West', 'South', 'South-East', 'South-West', 'East', 'West', 'N/A'])->nullable()->default('N/A');
+            $table->enum('office_furnishing_status', ['Furnished', 'Semi-Furnished', 'Unfurnished'])->nullable();
+            $table->enum('office_air_conditioned', ['Yes', 'No'])->nullable()->default('Yes');
+            $table->enum('office_meeting_room', ['Yes', 'No'])->nullable()->default('No');
+            $table->enum('office_security', ['Yes', 'No'])->nullable()->default('Yes');
+            $table->enum('office_parking', ['Yes', 'No'])->nullable()->default('Yes');
+            $table->enum('office_internet', ['Yes', 'No'])->nullable()->default('Yes');
+            $table->enum('office_power_backup', ['Yes', 'No'])->nullable()->default('Yes');
+            $table->enum('office_cctv', ['Yes', 'No'])->nullable()->default('Yes');
+            $table->enum('office_fire_safety', ['Yes', 'No'])->nullable()->default('Yes');
+            $table->enum('office_reception', ['Yes', 'No'])->nullable()->default('No');
+            $table->enum('office_kitchen', ['Yes', 'No'])->nullable()->default('No');
+            $table->enum('office_toilet', ['Yes', 'No'])->nullable()->default('Yes');
+            $table->enum('office_storage', ['Yes', 'No'])->nullable()->default('No');
+            $table->string('image')->nullable(); // Thumbnail
             $table->timestamps();
         });
         Schema::create('shops', function (Blueprint $table) {
@@ -96,6 +154,17 @@ return new class extends Migration
             $table->decimal('shop_back', 12, 2)->nullable();
             $table->integer('shop_floor')->nullable();
             $table->enum('shop_facing', ['North', 'North-East', 'North-West', 'South', 'South-East', 'South-West', 'East', 'West', 'N/A'])->nullable()->default('N/A');
+            $table->enum('advantage', ['Corner', 'On Road', 'Park Facing', 'Normal'])->nullable();
+            $table->enum('shop_security', ['Yes', 'No'])->nullable()->default('Yes');
+            $table->enum('shop_parking', ['Yes', 'No'])->nullable()->default('Yes');
+            $table->enum('shop_air_conditioned', ['Yes', 'No'])->nullable()->default('No');
+            $table->enum('shop_power_backup', ['Yes', 'No'])->nullable()->default('Yes');
+            $table->enum('shop_water_supply', ['Yes', 'No'])->nullable()->default('Yes');
+            $table->enum('shop_toilet', ['Yes', 'No'])->nullable()->default('Yes');
+            $table->enum('shop_storage', ['Yes', 'No'])->nullable()->default('No');
+            $table->enum('shop_cctv', ['Yes', 'No'])->nullable()->default('Yes');
+            $table->enum('shop_fire_safety', ['Yes', 'No'])->nullable()->default('Yes');
+            $table->string('image')->nullable(); // Thumbnail
             $table->timestamps();
         });
         Schema::create('agriculture_lands', function (Blueprint $table) {
@@ -104,6 +173,15 @@ return new class extends Migration
             $table->string('land_area_size')->nullable();
             $table->enum('land_area_units', ['Feet', 'Meters', 'Yards', 'Marla', 'Kanal', 'Kila', 'Bigha', 'Acre'])->nullable();
             $table->enum('land_facing', ['North', 'North-East', 'North-West', 'South', 'South-East', 'South-West', 'East', 'West', 'N/A'])->nullable()->default('N/A');
+            $table->enum('land_soil_type', ['Loamy', 'Clayey', 'Sandy', 'Saline', 'Peaty', 'Chalky'])->nullable();
+            $table->enum('land_irrigation', ['Yes', 'No'])->nullable()->default('Yes');
+            $table->enum('land_cultivation', ['Yes', 'No'])->nullable()->default('No');
+            $table->enum('land_fencing', ['Yes', 'No'])->nullable()->default('No');
+            $table->enum('land_boundary_wall', ['Yes', 'No'])->nullable()->default('No');
+            $table->enum('land_access_road', ['Yes', 'No'])->nullable()->default('Yes');
+            $table->enum('land_water_source', ['Well', 'Tube Well', 'Canal', 'River', 'Borewell', 'Other'])->nullable();
+            $table->enum('land_power_supply', ['Yes', 'No'])->nullable()->default('Yes');
+            $table->string('image')->nullable(); // Thumbnail
             $table->timestamps();
         });
         Schema::create('industrial_lands', function (Blueprint $table) {
@@ -112,10 +190,24 @@ return new class extends Migration
             $table->string('land_area_size')->nullable();
             $table->enum('land_area_units', ['Feet', 'Meters', 'Yards', 'Marla', 'Kanal', 'Kila', 'Bigha', 'Acre'])->nullable();
             $table->enum('land_facing', ['North', 'North-East', 'North-West', 'South', 'South-East', 'South-West', 'East', 'West', 'N/A'])->nullable()->default('N/A');
+            $table->enum('land_zone', ['Industrial', 'Commercial', 'Mixed Use'])->nullable();
+            $table->enum('land_access_road', ['Yes', 'No'])->nullable()->default('Yes');
+            $table->enum('land_power_supply', ['Yes', 'No'])->nullable()->default('Yes');
+            $table->enum('land_water_supply', ['Yes', 'No'])->nullable()->default('Yes');
+            $table->enum('land_sewage_system', ['Yes', 'No'])->nullable()->default('Yes');
+            $table->enum('land_boundary_wall', ['Yes', 'No'])->nullable()->default('No');
+            $table->enum('land_fencing', ['Yes', 'No'])->nullable()->default('No');
+            $table->enum('land_security', ['Yes', 'No'])->nullable()->default('Yes');
+            $table->enum('land_cctv', ['Yes', 'No'])->nullable()->default('Yes');
+            $table->enum('land_fire_safety', ['Yes', 'No'])->nullable()->default('Yes');
+            $table->enum('land_railway_access', ['Yes', 'No'])->nullable()->default('No');
+            $table->enum('advantage', ['Corner', 'On Road', 'Park Facing', 'Normal'])->nullable();
+            $table->string('image')->nullable(); // Thumbnail
             $table->timestamps();
         });    
         
         Schema::create('properties', function (Blueprint $table) {
+            // Mandatory fields
             $table->id();
             $table->string('property_title');
             $table->string('slug')->unique();
@@ -127,24 +219,12 @@ return new class extends Migration
             $table->enum('price_in', ['Lakh', 'Crore', 'Thousand', 'Million', 'Billion', 'Trillion']);
             $table->decimal('price', 15, 2);
             $table->string('status')->default('active'); // pending, active, sold, etc.
-                
-            
             // Non Mandatory fields
-            $table->enum('advantage', ['Corner', 'On Road', 'Park Facing', 'Normal'])->nullable();
             $table->decimal('latitude', 10, 8)->nullable();
             $table->decimal('longitude', 11, 8)->nullable();
             $table->string('hospital_distance')->nullable();
             $table->string('railway_distance')->nullable();
             $table->string('transport_distance')->nullable();
-            $table->string('image')->nullable(); // Thumbnail
-            $table->integer('bedrooms')->nullable();
-            $table->integer('bathrooms')->nullable();
-            $table->integer('balconies')->nullable();
-            $table->integer('total_floors')->nullable();
-            $table->enum('furnishing_status', ['Furnished', 'Semi-Furnished', 'Unfurnished'])->nullable();
-            // youtube video link
-            $table->string('video_link')->nullable();
-            // Court Case
             $table->enum('court_case', ['Yes', 'No'])->nullable()->default('No');
             $table->string('court_case_details')->nullable();
             // foreign keys

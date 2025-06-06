@@ -114,17 +114,33 @@
             <div class="d-flex flex-wrap gap-2">
                 @foreach(['Corner', 'On Road', 'Park Facing', 'Normal'] as $option)
                     <label class="custom-radio-btn">
-                        <input type="radio" wire:model.defer="plot.advantage" value="{{ $option }}">
+                        <input type="radio" wire:model="advantage" value="{{ $option }}">
                         <span>{{ $option }}</span>
                     </label>
                 @endforeach
             </div>
-            @error('plot.advantage') <span class="text-danger small">{{ $message }}</span> @enderror
+            @error('advantage') <span class="text-danger small">{{ $message }}</span> @enderror
         </div>
     </div>
 
     
     <!-- Right Column: Upload Image -->
+        <!-- Facing -->
+    <div class="col-md-6">
+        <label class="form-label fw-semibold">Land Facing</label>
+        <select wire:model.defer="agriculture.land_facing" class="form-select">
+            <option value="N/A">-- Select --</option>
+            <option value="North">North</option>
+            <option value="North-East">North-East</option>
+            <option value="North-West">North-West</option>
+            <option value="South">South</option>
+            <option value="South-East">South-East</option>
+            <option value="South-West">South-West</option>
+            <option value="East">East</option>
+            <option value="West">West</option>
+        </select>
+        @error('agriculture.land_facing') <span class="text-danger small">{{ $message }}</span> @enderror
+    </div>
     <div class="col-md-4">
         <h5 class="fw-bold text-primary mb-3">🖼️ Upload Property Image</h5>
 
@@ -138,5 +154,10 @@
                 <img src="{{ $image->temporaryUrl() }}" class="img-fluid rounded" style="max-height: 280px;">
             </div>
         @endif
+    </div>
+    <div class="col-md-12">
+        <h6 class="fw-semibold text-primary">Add YouTube Video (Optional)</h6>
+        <input type="url" wire:model.defer="video_link" class="form-control" placeholder="e.g. https://youtu.be/xyz123">
+        @error('video_link') <span class="text-danger small">{{ $message }}</span> @enderror
     </div>
 </div>
