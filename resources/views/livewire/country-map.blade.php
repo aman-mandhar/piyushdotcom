@@ -19,12 +19,10 @@
         })"
         x-init="initMap()"
     >
-        <h2 class="text-center mb-4">All Active Properties on Map</h2>
-
         <!-- City Filter Dropdown -->
         <div class="row justify-content-center mb-3">
             <div class="col-md-6">
-                <label for="cityFilter" class="form-label fw-bold">Filter by City:</label>
+                <label for="cityFilter" class="form-label">Filter by City</label>
                 <select id="cityFilter" class="form-select" x-model="selectedCity" @change="filterMarkers()">
                     <option value="">-- All Cities --</option>
                     @foreach ($cities as $city)

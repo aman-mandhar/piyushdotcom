@@ -4,237 +4,111 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Property extends Model
 {
-    use HasFactory, SoftDeletes;
+    use SoftDeletes;
 
     protected $fillable = [
+        // Mandatory fields
         'property_title',
         'slug',
-
-        // Owner Details
-        'owner_name',
-        'owner_contact',
-        'owner_email',
-        'owner_address',
-        'owner_nationality',
-        'owner_type',
+        'description',
         'owner_document_type',
-
-        // Property Details
+        'current_status',
         'property_address',
+        'location',
+        'price_in',
+        'price',
+        'status',
+        // Non Mandatory fields
         'latitude',
         'longitude',
-        'court_case',
-        'court_case_details',
-        'current_status',
-        'listing_type',
-        'property_type',
-        
-
-        // Plot
-        'plot_category',
-        'measurement_unit',
-        'plot_type',
-        'plot_number',
-        'plot_front',
-        'plot_side_1',
-        'plot_side_2',
-        'plot_back',
-        'plot_size',
-        'price_per_sqft',
-
-        // House / Apartment / Villa
-        'floor_number',
+        'hospital_distance',
+        'railway_distance',
+        'transport_distance',
+        'image',
         'bedrooms',
         'bathrooms',
         'balconies',
         'total_floors',
         'furnishing_status',
-
-        // Office
-        'office_floor',
-        'office_bathrooms',
-        'office_balconies',
-        'office_area_size_unit',
-        'office_area_size',
-        'office_furnishing_status',
-
-        // Shop
-        'shop_type',
-        'shop_area_size_unit',
-        'shop_front',
-        'shop_side_1',
-        'shop_side_2',
-        'shop_back',
-        'shop_area_size',
-        'shop_floor',
-        'shop_with_water_connection',
-
-        // Agriculture Land
-        'land_type',
-        'land_area_size_unit',
-        'land_area_size',
-        'current_status_of_land',
-
-        // Common
-        'price_in_unit',
-        'price',
-        'negotiable_price',
-        'market_price',
-        'hospital_distance',
-        'railway_distance',
-        'transport_distance',
-        'image',
-        'description',
-        'city_id',
-        'area_unit',
-        'area',
-        'location',
-        'facing',
-        'status',
-        'user_id',
         'video_link',
+        'court_case',
+        'court_case_details',
+        'city_id',
+        'user_id',
+        'listing_type_id',
+        'property_type_id',
+        'plot_id',
+        'house_id',
+        'apartment_id',
+        'villa_id',
+        'office_id',
+        'shop_id',
+        'agriculture_land_id',
+        'industrial_land_id',
     ];
 
-    protected $casts = [
-        'plot_front' => 'float',
-        'plot_side_1' => 'float',
-        'plot_side_2' => 'float',
-        'plot_back' => 'float',
-        'plot_size' => 'float',
-        'price_per_sqft' => 'float',
-        'price' => 'float',
-        'market_price' => 'float',
-
-        'office_area_size' => 'float',
-        'shop_front' => 'float',
-        'shop_side_1' => 'float',
-        'shop_side_2' => 'float',
-        'shop_back' => 'float',
-        'shop_area_size' => 'float',
-        'land_area_size' => 'float',
-
-        'shop_with_water_connection' => 'boolean',
-        'negotiable_price' => 'boolean',
-    ];
-
-    // 🔗 Relationships
-    public function user()
-    {
-        return $this->belongsTo(User::class, 'user_id');
-    }
+    // Relationships
 
     public function city()
     {
-        return $this->belongsTo(City::class, 'city_id');
+        return $this->belongsTo(City::class);
     }
 
-    // 📊 Scopes
-    public function scopeActive($query)
+    public function user()
     {
-        return $query->where('status', 'active');
+        return $this->belongsTo(User::class);
     }
 
-    public function scopeByType($query, $type)
+    public function listingType()
     {
-        return $query->where('property_type', $type);
+        return $this->belongsTo(ListingType::class);
     }
 
-    public function scopeForSale($query)
+    public function propertyType()
     {
-        return $query->where('listing_type', 'Sale');
+        return $this->belongsTo(PropertyType::class);
     }
 
-    public function scopeInCity($query, $cityId)
+    public function plot()
     {
-        return $query->where('city_id', $cityId);
+        return $this->belongsTo(Plot::class);
     }
 
-    public function scopeWithPriceLessThan($query, $price)
+    public function house()
     {
-        return $query->where('price', '<=', $price);
+        return $this->belongsTo(House::class);
     }
 
-    public function scopeWithPriceGreaterThan($query, $price)
+    public function apartment()
     {
-        return $query->where('price', '>=', $price);
+        return $this->belongsTo(Apartment::class);
     }
 
-    public function scopeWithNegotiablePrice($query)
+    public function villa()
     {
-        return $query->where('negotiable_price', true);
+        return $this->belongsTo(Villa::class);
     }
 
-    public function scopeWithNonNegotiablePrice($query)
+    public function office()
     {
-        return $query->where('negotiable_price', false);
+        return $this->belongsTo(Office::class);
     }
 
-    public function scopeWithCourtCase($query)
+    public function shop()
     {
-        return $query->where('court_case', 'Yes');
+        return $this->belongsTo(Shop::class);
     }
 
-    public function scopeWithoutCourtCase($query)
+    public function agricultureLand()
     {
-        return $query->where('court_case', 'No');
+        return $this->belongsTo(AgricultureLand::class);
     }
 
-    public function scopeWithImage($query)
+    public function industrialLand()
     {
-        return $query->whereNotNull('image');
-    }
-
-    public function scopeWithoutImage($query)
-    {
-        return $query->whereNull('image');
-    }
-
-    public function scopeWithStatus($query, $status)
-    {
-        return $query->where('status', $status);
-    }
-
-    public function scopeWithSoftDeleted($query)
-    {
-        return $query->onlyTrashed();
-    }
-
-    public function scopeWithoutSoftDeleted($query)
-    {
-        return $query->withoutTrashed();
-    }
-
-    public function scopeWithCreatedAt($query, $date)
-    {
-        return $query->whereDate('created_at', $date);
-    }
-
-    public function scopeWithUpdatedAt($query, $date)
-    {
-        return $query->whereDate('updated_at', $date);
-    }
-
-    public function scopeWithDeletedAt($query, $date)
-    {
-        return $query->whereDate('deleted_at', $date);
-    }
-
-    public function scopeWithOwnerName($query, $name)
-    {
-        return $query->where('owner_name', 'like', "%{$name}%");
-    }
-
-    public function scopeWithOwnerContact($query, $contact)
-    {
-        return $query->where('owner_contact', 'like', "%{$contact}%");
-    }
-
-    public function scopeWithOwnerEmail($query, $email)
-    {
-        return $query->where('owner_email', 'like', "%{$email}%");
+        return $this->belongsTo(IndustrialLand::class);
     }
 }

@@ -14,7 +14,7 @@
                 </div>
                 <div class="bg-white border border-light rounded p-4 shadow-sm mb-4">
                     <div class="row g-4">
-                        <h5 class="mb-4 fw-bold text-secondary">📋 Basic detail of Property</h5>
+                        <h5 class="mb-4 fw-bold text-secondary">📋 Basic Information</h5>
                         <!-- Property Title -->
                         <div class="col-md-12">
                             <label class="form-label fw-semibold">Property Title <i>(It will be helpful to search your property over the internet)</i></label>
@@ -27,19 +27,6 @@
                             <label class="form-label fw-semibold">Address of Property</label>
                             <input type="textarea" wire:model="property_address" class="form-control bg-light" required>
                         </div>
-
-                        <!-- Longitude & Latitude -->
-                        <div class="col-md-6">
-                            <label class="form-label fw-semibold">Longitude</label>
-                            <input type="text" wire:model="longitude" class="form-control shadow-sm" placeholder="e.g. 77.5946">
-                            @error('longitude') <small class="text-danger">{{ $message }}</small> @enderror
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label fw-semibold">Latitude</label>
-                            <input type="text" wire:model="latitude" class="form-control shadow-sm" placeholder="e.g. 12.9716">
-                            @error('latitude') <small class="text-danger">{{ $message }}</small> @enderror
-                        </div>
-
                         <!--Court Case -->
                         <div class="col-md-4">
                             <label class="form-label fw-semibold">Is any Court Case about this property?</label>
@@ -130,7 +117,7 @@
                                 <label class="form-label fw-semibold">Plot is readt to use for</label>
                                 <select wire:model="plot_category" class="form-control">
                                     <option value="">Select</option>
-                                    <option value="Residential">Residenceial</option>
+                                    <option value="Residential">Residential</option>
                                     <option value="Commercial">Commercial</option>
                                     <option value="Industrial">Industrial</option>
                                     <option value="Mix">Mix Use</option>
@@ -465,7 +452,7 @@
                 
                         <!-- Negotiable -->
                         <div class="col-md-2">
-                            <label class="form-label fw-semibold">Nagotiabe</label>
+                            <label class="form-label fw-semibold">Nagotiable</label>
                             <select wire:model.lazy="negotiable_price" class="form-control">
                                 <option value="">Select</option>
                                 <option value="Yes">Yes</option>
@@ -577,52 +564,20 @@
                             <input type="text" wire:model="video_link" class="form-control" placeholder="e.g. https://www.youtube.com/watch?v=example">
                             @error('video_link') <small class="text-danger">{{ $message }}</small> @enderror
                         </div>
-                        <h5 class="mb-4 fw-bold text-secondary">👤 Owner/Contact Person's Information</h5>
-                
+                        <h5 class="mb-4 fw-bold text-secondary">👤 Other Information</h5>
+                    </div>    
                     <div class="row">
                         <!-- Row 1: Full width -->
-                        <div class="col-12 mb-3">
-                            <label class="form-label fw-semibold">Owner/Contact Name <span class="text-danger">*</span></label>
-                            <input type="text" wire:model="owner_name" placeholder="e.g. Aman" class="form-control">
-                            @error('owner_name') <small class="text-danger">{{ $message }}</small> @enderror
+                        <!-- Longitude & Latitude -->
+                        <div class="col-md-3">
+                            <label class="form-label fw-semibold">Longitude</label>
+                            <input type="text" wire:model="longitude" class="form-control shadow-sm" placeholder="e.g. 77.5946">
+                            @error('longitude') <small class="text-danger">{{ $message }}</small> @enderror
                         </div>
-                
-                        <!-- Row 2 -->
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label fw-semibold">Owner/Contact Mobile <span class="text-danger">*</span></label>
-                            <input type="text" wire:model="owner_contact" placeholder="e.g. 9592306823" class="form-control">
-                            @error('owner_contact') <small class="text-danger">{{ $message }}</small> @enderror
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label fw-semibold">Owner/Contact Email</label>
-                            <input type="email" wire:model="owner_email" placeholder="e.g. aman@email.com" class="form-control">
-                        </div>
-                
-                        <!-- Row 3 -->
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label fw-semibold">Owner/Contact Address</label>
-                            <input type="text" wire:model="owner_address" placeholder="e.g. House No. 123, Model Town" class="form-control">
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label fw-semibold">Owner/Contact's Nationality</label>
-                            <select wire:model="owner_nationality" class="form-select">
-                                <option value="">Select</option>
-                                <option value="Indian">Indian</option>
-                                <option value="NRI">NRI</option>
-                                <option value="Other">Other</option>
-                            </select>
-                        </div>
-                
-                        <!-- Row 4 -->
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label fw-semibold">Contact Type</label>
-                            <select wire:model="owner_type" class="form-select">
-                                <option value="">Select</option>
-                                <option value="Individual">Known/Self Owner </option>
-                                <option value="Broker">Broker</option>
-                                <option value="Investor">Investor</option>
-                                <option value="Builder">Builder</option>
-                            </select>
+                        <div class="col-md-3">
+                            <label class="form-label fw-semibold">Latitude</label>
+                            <input type="text" wire:model="latitude" class="form-control shadow-sm" placeholder="e.g. 12.9716">
+                            @error('latitude') <small class="text-danger">{{ $message }}</small> @enderror
                         </div>
                         <div class="col-md-6 mb-3">
                             <label class="form-label fw-semibold">Property Document you have?</label>
@@ -636,9 +591,8 @@
                             </select>
                         </div>
                     </div>
-                    </div>
                 </div>
-                <button type="submit">Submit Property</button>
+                <button type="submit" class="btn btn-success w-100 mt-4 fw-bold">✅ Submit Property</button>
             </form>
         </section>
         </div>

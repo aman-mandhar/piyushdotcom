@@ -60,6 +60,7 @@
             #map { height: 400px; }
         }
     </style>
+    @stack('styles')
 </head>
 
 <body>
@@ -99,7 +100,7 @@
 <script src="{{ asset('js/main.js') }}"></script>
 
 <script src="https://www.google.com/recaptcha/api.js?render={{ config('services.recaptcha.key') }}"></script>
-
+<!-- <script defer src="//unpkg.com/alpinejs"></script> -->
 <!-- Leaflet + Plugins -->
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script src="https://unpkg.com/leaflet.markercluster/dist/leaflet.markercluster.js"></script>

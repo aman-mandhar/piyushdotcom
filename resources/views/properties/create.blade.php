@@ -17,7 +17,7 @@
 @endguest
 
 @auth
-    @livewire('create-property')
+    @livewire('sell-property')
 @endauth
 
 @endsection

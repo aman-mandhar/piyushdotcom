@@ -4,8 +4,16 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{
     HomeController, AuthController, DashboardController, UserController,
     UserLoginLogController, UserProfileController, PropertyController, VehicleController, DirectoryController,
-    CallController
-};
+    CallController, CreatePropertyController};
+use App\Livewire\SellProperty; 
+
+
+// ------------------------------------
+// Livewire Routes
+// ------------------------------------
+Route::middleware(['auth'])->group(function () {
+    Route::get('/properties/create', SellProperty::class)->name('properties.create');
+});
 
 // ------------------------------------
 // Public Routes

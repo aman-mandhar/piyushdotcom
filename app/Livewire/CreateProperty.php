@@ -11,22 +11,76 @@ use Livewire\WithFileUploads;
 class CreateProperty extends Component
 {
     use WithFileUploads;
-   // Common Fields 
-    public $property_title, $slug;
-    public $owner_name, $owner_contact, $owner_email, $owner_address, $owner_nationality, $owner_type, $owner_document_type;
-    public $property_address, $latitude, $longitude, $court_case, $court_case_details, $current_status, $listing_type, $property_type, $video_link;
-    // Dynamic Fields
-    public $measurement_unit, $plot_type, $plot_number;
-    public $plot_category, $plot_front, $plot_side_1, $plot_side_2, $plot_back, $plot_size, $price_per_sqft;
-    public $floor_number, $bedrooms, $bathrooms, $balconies, $total_floors, $furnishing_status;
-    public $office_floor, $office_bathrooms, $office_balconies;
-    public $office_area_size_unit, $office_area_size, $office_furnishing_status;
-    public $shop_type, $shop_area_size_unit, $shop_front, $shop_side_1, $shop_side_2, $shop_back, $shop_area_size, $shop_floor, $shop_with_water_connection;
-    public $land_type, $land_area_size_unit, $land_area_size, $current_status_of_land;
-    // Last Step Fields
-    public $price_in, $price, $negotiable_price = false, $market_price;
-    public $hospital_distance, $railway_distance, $transport_distance;
-    public $image, $description, $city_id, $area_unit, $area, $location, $facing;
+   // Fields for step 1 
+    public $property_title, 
+           $slug, 
+           $description, 
+           $owner_document_type, 
+           $current_status, 
+           $listing_type, 
+           $property_address, 
+           $city_id,
+           $location,
+           $price_in, 
+           $price,
+           $user_id,
+           $property_type;
+    // Fields for step 2 (dynamic fields as per selected property type)
+    // If property type is Plot, then these fields will be used
+    public $plot_category, 
+           $measurement_unit, 
+           $plot_type, 
+           $plot_number,
+           $plot_front, 
+           $plot_side_1, 
+           $plot_side_2, 
+           $plot_back, 
+           $plot_size, 
+           $price_per_sqft;
+    // If property type is House, Flat, Apartment or Villa, then these fields will be used
+    public $floor_number, 
+           $bedrooms, 
+           $bathrooms, 
+           $balconies, 
+           $total_floors, 
+           $furnishing_status;
+    // If property type is Office, then these fields will be used
+    public $office_floor, 
+           $office_bathrooms, 
+           $office_balconies,
+           $office_area_size_unit, 
+           $office_area_size, 
+           $office_furnishing_status;
+    // If property type is Shop, then these fields will be used
+    public $shop_type, 
+           $shop_area_size_unit, 
+           $shop_front, 
+           $shop_side_1, 
+           $shop_side_2, 
+           $shop_back, 
+           $shop_area_size, 
+           $shop_floor, 
+           $shop_with_water_connection;
+    // If property type is Agriculture Land, then these fields will be used
+    public $land_type, 
+           $land_area_size_unit, 
+           $land_area_size, 
+           $current_status_of_land;
+    // Fields for step 3
+    public $latitude, 
+           $longitude, 
+           $negotiable_price = false,
+           $market_price,
+           $hospital_distance,
+           $railway_distance,
+           $transport_distance,
+           $image,
+           $area,
+           $area_unit,
+           $facing,
+           $video_link,
+           $court_case, 
+           $court_case_details;
     public $status = 'active';
 
     // Mount Variables
@@ -111,44 +165,35 @@ class CreateProperty extends Component
     {
         $data = $this->validate([
                 'property_title' => 'required|string|max:255',
-                'owner_name' => 'required|string',
-                'owner_contact' => 'required|string',
-                'owner_email' => 'nullable|email',
-                'owner_address' => 'nullable|string',
-                'owner_nationality' => 'nullable',
-                'owner_type' => 'nullable',
+                'description' => 'nullable|string|max:1000',
                 'owner_document_type' => 'nullable',
-                'property_address' => 'required|string|max:255',
-                'latitude' => 'nullable|numeric',
-                'longitude' => 'nullable|numeric',
-                'court_case' => 'required',
-                'court_case_details' => 'nullable|string|max:255',
                 'current_status' => 'required',
                 'listing_type' => 'required',
-                'property_type' => 'required',
+                'property_address' => 'required|string|max:255',
+                'city_id' => 'required|exists:cities,id',
+                'location' => 'required|string|max:255',
                 'price_in' => 'required',
                 'price' => 'required|numeric',
+                'property_type' => 'required',
+                'latitude' => 'nullable|numeric',
+                'longitude' => 'nullable|numeric',
                 'negotiable_price' => 'nullable',
                 'market_price' => 'nullable|numeric',
                 'hospital_distance' => 'nullable|string|max:100',
                 'railway_distance' => 'nullable|string|max:100',
                 'transport_distance' => 'nullable|string|max:100',
-                'city_id' => 'required|exists:cities,id',
+                'image' => 'nullable|image|max:5120|mimes:jpeg,png,jpg,gif,svg',
                 'area_unit' => 'nullable',
                 'area' => 'required|string|max:255',
-                'location' => 'required|string|max:255',
                 'facing' => 'nullable',
-                'image' => 'nullable|image|max:5120|mimes:jpeg,png,jpg,gif,svg',
-                'description' => 'nullable|string|max:1000',
                 'video_link' => 'nullable|url|max:255',
-                
+                'court_case' => 'required',
+                'court_case_details' => 'nullable|string|max:255',
         ]);
-
-        
         if ($this->property_type === 'Plot') {
             $this->validate([
-                'plot_category' => 'nullable',
-                'plot_type' => 'nullable',
+                'plot_category' => 'required',
+                'plot_type' => 'required',
                 'plot_number' => 'nullable|string|max:255',
                 'plot_front' => 'nullable|numeric',
                 'plot_back' => 'nullable|numeric',
@@ -161,11 +206,11 @@ class CreateProperty extends Component
         if (in_array($this->property_type, ['House', 'Flat', 'Apartment', 'Villa'])) {
             $this->validate([
                 'floor_number' => 'nullable|string|max:255',
-                'bedrooms' => 'nullable|integer|min:1',
+                'bedrooms' => 'required|integer|min:1',
                 'bathrooms' => 'nullable|integer|min:1',
                 'balconies' => 'nullable|integer|min:0',
                 'total_floors' => 'nullable|integer|min:1',
-                'furnishing_status' => 'nullable',
+                'furnishing_status' => 'required',
             ]);
         }
 
@@ -176,29 +221,29 @@ class CreateProperty extends Component
                 'office_balconies' => 'nullable|integer|min:0',
                 'office_area_size_unit' => 'nullable',
                 'office_area_size' => 'nullable|numeric',
-                'office_furnishing_status' => 'nullable',
+                'office_furnishing_status' => 'required',
             ]);
         }
 
         if ($this->property_type === 'Shop') {
             $this->validate([
-                'shop_type' => 'nullable',
+                'shop_type' => 'required',
                 'shop_front' => 'nullable|numeric',
                 'shop_back' => 'nullable|numeric',
                 'shop_side_1' => 'nullable|numeric',
                 'shop_side_2' => 'nullable|numeric',
                 'shop_area_size' => 'nullable|numeric',
                 'shop_floor' => 'nullable|integer|min:1',
-                'shop_with_water_connection' => 'nullable',
+                'shop_with_water_connection' => 'required',
             ]);
         }
 
         if ($this->property_type === 'Agriculture Land') {
             $this->validate([
-                'land_type' => 'nullable',
-                'land_area_size_unit' => 'nullable',
-                'current_status_of_land' => 'nullable',
-                'land_area_size' => 'nullable|numeric',
+                'land_type' => 'required',
+                'land_area_size_unit' => 'required',
+                'current_status_of_land' => 'required',
+                'land_area_size' => 'required|numeric',
             ]);
         }
 
@@ -215,12 +260,6 @@ class CreateProperty extends Component
             'user_id' => auth()->id(),
             'property_title' => $this->property_title,
             'slug' => $this->slug,
-            'owner_name' => $this->owner_name,
-            'owner_contact' => $this->owner_contact,
-            'owner_email' => $this->owner_email,
-            'owner_address' => $this->owner_address,
-            'owner_nationality' => $this->owner_nationality,
-            'owner_type' => $this->owner_type,
             'owner_document_type' => $this->owner_document_type,
             'property_address' => $this->property_address,
             'latitude' => $this->latitude,
@@ -232,7 +271,6 @@ class CreateProperty extends Component
             'property_type' => $this->property_type,
             'video_link' => $this->video_link,
             
-            // Step 2 (optional dynamic fields)
             'plot_category' => $this->plot_category,
             'measurement_unit' => 'Sq. Feet',
             'plot_type' => $this->plot_type,
@@ -269,7 +307,6 @@ class CreateProperty extends Component
             'land_area_size' => $this->land_area_size,
             'current_status_of_land' => $this->current_status_of_land,
 
-            // Step 3
             'city_id' => $this->city_id,
             'location' => $this->location,
             'price_in_unit' => $this->price_in,
