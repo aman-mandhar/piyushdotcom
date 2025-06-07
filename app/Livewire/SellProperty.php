@@ -238,58 +238,187 @@ class SellProperty extends Component
         return redirect()->route('dashboard');
     }
 
+    public $plotData,
+        $houseData,
+        $apartmentData,
+        $villaData,
+        $officeData,
+        $shopData,
+        $agricultureData,
+        $industrialData;
     protected function validatePropertyTypeFields()
     {
         switch ($this->property_type_id) {
             case 1:
-                $this->validate([
-                    'plot.plot_front' => 'nullable|numeric',
-                    'plot.plot_back' => 'nullable|numeric',
-                    'plot.plot_side_1' => 'nullable|numeric',
-                    'plot.plot_side_2' => 'nullable|numeric',
-                    'plot.plot_size' => 'required|numeric',
-                    'plot.use_as' => 'required|string',
-                    'advantage' => 'nullable|string',
-                ]);
+                $this->plotData = $this->validate([
+                                'plot.plot_front' => 'nullable|numeric',
+                                'plot.plot_back' => 'nullable|numeric',
+                                'plot.plot_side_1' => 'nullable|numeric',
+                                'plot.plot_side_2' => 'nullable|numeric',
+                                'plot.plot_size' => 'required|numeric',
+                                'plot.use_as' => 'required|string',
+                                'plot.advantage' => 'nullable|string',
+                                'plot.image' => 'nullable|image|max:2048',
+                                'plot.plot_facing' => 'required|string',
+                                'plot.video_link' => 'nullable|url',
+                            ]);
                 break;
             case 2:
-                $this->validate([
-                    'house.house_type' => 'required|string',
-                ]);
+                $this->houseData = $this->validate([
+                                'house.house_type' => 'required|string',
+                                'house.house_area_units' => 'required|in:Sq. Feet,Sq. Meters,Sq. Yards,Marla,Kanal',
+                                'house.house_area_size' => 'required|string',
+                                'house.construction_year' => 'nullable|date',
+                                'house.renovation_year' => 'nullable|date',
+                                'house.house_bedrooms' => 'nullable|in:1,2,3,4,5+',
+                                'house.house_bathrooms' => 'nullable|in:1,2,3,4,5+',
+                                'house.house_balconies' => 'nullable|in:1,2,3,4,5+',
+                                'house.house_floors' => 'nullable|in:1,2,3,4,5+',
+                                'house.house_facing' => 'nullable|in:North,North-East,North-West,South,South-East,South-West,East,West,N/A',
+                                'house.house_furnishing_status' => 'nullable|in:Furnished,Semi-Furnished,Unfurnished',
+                                'house.advantage' => 'nullable|in:Corner,On Road,Park Facing,Normal',
+                                'image' => 'nullable|image|max:2048',
+                                'video_link' => 'nullable|url',
+                            ]);
                 break;
             case 3:
-                $this->validate([
-                    'apartment.apartment_type' => 'required|string',
-                ]);
+                $this->apartmentData = $this->validate([
+                                'apartment.apartment_type' => 'required|string',
+                                'apartment.apartment_area_size' => 'required|string',
+                                'apartment.apartment_area_units' => 'required|in:Sq. Feet,Sq. Meters,Sq. Yards,Marla,Kanal',
+                                'apartment.apartment_floor' => 'nullable|in:Ground,1st,2nd,3rd,4th,5th,6th,7th,8th,9th,10th',
+                                'apartment.apartment_bedrooms' => 'nullable|in:1,2,3,4,5+',
+                                'apartment.apartment_bathrooms' => 'nullable|in:1,2,3,4,5+',
+                                'apartment.apartment_balconies' => 'nullable|in:1,2,3,4,5+',
+                                'apartment.apartment_floors' => 'nullable|in:1,2,3,4,5+',
+                                'apartment.apartment_view' => 'nullable|in:Park,Road,City,Sea,Mountain,Garden,Pool,Other',
+                                'apartment.apartment_facing' => 'nullable|in:North,North-East,North-West,South,South-East,South-West,East,West,N/A',
+                                'apartment.apartment_furnishing_status' => 'nullable|in:Furnished,Semi-Furnished,Unfurnished',
+                                'apartment.apartment_security' => 'nullable|in:Yes,No',
+                                'apartment.apartment_elevator' => 'nullable|in:Yes,No',
+                                'apartment.apartment_parking' => 'nullable|in:Yes,No',
+                                'apartment.apartment_power_backup' => 'nullable|in:Yes,No',
+                                'apartment.apartment_water_supply' => 'nullable|in:Yes,No',
+                                'apartment.apartment_gas_supply' => 'nullable|in:Yes,No',
+                                'apartment.apartment_waste_management' => 'nullable|in:Yes,No',
+                                'apartment.apartment_gym' => 'nullable|in:Yes,No',
+                                'apartment.apartment_swimming_pool' => 'nullable|in:Yes,No',
+                                'apartment.apartment_clubhouse' => 'nullable|in:Yes,No',
+                                'apartment.apartment_play_area' => 'nullable|in:Yes,No',
+                                'apartment.apartment_security_guard' => 'nullable|in:Yes,No',
+                                'apartment.apartment_fire_safety' => 'nullable|in:Yes,No',
+                                'apartment.apartment_cctv' => 'nullable|in:Yes,No',
+                                'apartment.apartment_intercom' => 'nullable|in:Yes,No',
+                                'image' => 'nullable|image|max:2048',
+                                'video_link' => 'nullable|url',
+                            ]);
                 break;
             case 4:
-                $this->validate([
-                    'villa.villa_type' => 'required|string',
-                ]);
+                 $this->villaData = $this->validate([
+                                'villa.villa_type' => 'required|string',
+                                'villa.villa_area_size' => 'required|string',
+                                'villa.villa_area_units' => 'required|in:Sq. Feet,Sq. Meters,Sq. Yards,Marla,Kanal',
+                                'villa.villa_facing' => 'nullable|in:North,North-East,North-West,South,South-East,South-West,East,West,N/A',
+                                'villa.villa_bedrooms' => 'nullable|in:1,2,3,4,5+',
+                                'villa.villa_bathrooms' => 'nullable|in:1,2,3,4,5+',
+                                'villa.villa_balconies' => 'nullable|in:1,2,3,4,5+',
+                                'villa.villa_floors' => 'nullable|in:1,2,3,4,5+',
+                                'villa.villa_furnishing_status' => 'nullable|in:Furnished,Semi-Furnished,Unfurnished',
+                                'villa.villa_swimming_pool' => 'nullable|in:Yes,No',
+                                'villa.villa_garden' => 'nullable|in:Yes,No',
+                                'villa.villa_parking' => 'nullable|in:Yes,No',
+                                'villa.advantage' => 'nullable|in:Corner,On Road,Park Facing,Normal',
+                                'image' => 'nullable|image|max:2048',
+                                'video_link' => 'nullable|url',
+                            ]);
                 break;
             case 5:
-                $this->validate([
-                    'office.office_type' => 'required|string',
-                ]);
+                $this->officeData = $this->validate([
+                                'office.office_type' => 'required|string',
+                                'office.office_area_size' => 'required|string',
+                                'office.office_area_units' => 'required|in:Sq. Feet,Sq. Meters,Sq. Yards',
+                                'office.floor_number' => 'nullable|string',
+                                'office.office_facing' => 'nullable|in:North,North-East,North-West,South,South-East,South-West,East,West,N/A',
+                                'office.office_furnishing_status' => 'nullable|in:Furnished,Semi-Furnished,Unfurnished',
+                                'office.office_air_conditioned' => 'nullable|in:Yes,No',
+                                'office.office_meeting_room' => 'nullable|in:Yes,No',
+                                'office.office_security' => 'nullable|in:Yes,No',
+                                'office.office_parking' => 'nullable|in:Yes,No',
+                                'office.office_internet' => 'nullable|in:Yes,No',
+                                'office.office_power_backup' => 'nullable|in:Yes,No',
+                                'office.office_cctv' => 'nullable|in:Yes,No',
+                                'office.office_fire_safety' => 'nullable|in:Yes,No',
+                                'office.office_reception' => 'nullable|in:Yes,No',
+                                'office.office_kitchen' => 'nullable|in:Yes,No',
+                                'office.office_toilet' => 'nullable|in:Yes,No',
+                                'office.office_storage' => 'nullable|in:Yes,No',
+                                'image' => 'nullable|image|max:2048',
+                                'video_link' => 'nullable|url',
+                            ]);
                 break;
             case 6:
-                $this->validate([
-                    'shop.shop_type' => 'required|string',
-                ]);
-                break;
+                $this->shopData = $this->validate([
+                                'shop.shop_type' => 'required|string',
+                                'shop.shop_area_size' => 'required|string',
+                                'shop.shop_area_units' => 'required|in:Sq. Feet,Sq. Meters,Sq. Yards',
+                                'shop.shop_front' => 'nullable|numeric',
+                                'shop.shop_side_1' => 'nullable|numeric',
+                                'shop.shop_side_2' => 'nullable|numeric',
+                                'shop.shop_back' => 'nullable|numeric',
+                                'shop.shop_floor' => 'nullable|integer',
+                                'shop.shop_facing' => 'nullable|in:North,North-East,North-West,South,South-East,South-West,East,West,N/A',
+                                'shop.advantage' => 'nullable|in:Corner,On Road,Park Facing,Normal',
+                                'shop.shop_security' => 'nullable|in:Yes,No',
+                                'shop.shop_parking' => 'nullable|in:Yes,No',
+                                'shop.shop_air_conditioned' => 'nullable|in:Yes,No',
+                                'shop.shop_power_backup' => 'nullable|in:Yes,No',
+                                'shop.shop_water_supply' => 'nullable|in:Yes,No',
+                                'shop.shop_toilet' => 'nullable|in:Yes,No',
+                                'shop.shop_storage' => 'nullable|in:Yes,No',
+                                'shop.shop_cctv' => 'nullable|in:Yes,No',
+                                'shop.shop_fire_safety' => 'nullable|in:Yes,No',
+                                'image' => 'nullable|image|max:2048',
+                                'video_link' => 'nullable|url',
+                            ]);
             case 7:
-                $this->validate([
-                    'agriculture.land_type' => 'required|string',
-                    'agriculture.land_area_size' => 'required|numeric',
-                    'agriculture.land_area_units' => 'required|string',
-                    'agriculture.land_facing' => 'required|string',
-                    'image' => 'nullable|image|max:2048',
-                ]);
+                $this->agricultureData = $this->validate([
+                                'agriculture.land_type' => 'required|string',
+                                'agriculture.land_area_size' => 'required|string',
+                                'agriculture.land_area_units' => 'required|in:Feet,Meters,Yards,Marla,Kanal,Kila,Bigha,Acre',
+                                'agriculture.land_facing' => 'nullable|in:North,North-East,North-West,South,South-East,South-West,East,West,N/A',
+                                'agriculture.land_soil_type' => 'nullable|in:Loamy,Clayey,Sandy,Saline,Peaty,Chalky',
+                                'agriculture.land_irrigation' => 'nullable|in:Yes,No',
+                                'agriculture.land_cultivation' => 'nullable|in:Yes,No',
+                                'agriculture.land_fencing' => 'nullable|in:Yes,No',
+                                'agriculture.land_boundary_wall' => 'nullable|in:Yes,No',
+                                'agriculture.land_access_road' => 'nullable|in:Yes,No',
+                                'agriculture.land_power_supply' => 'nullable|in:Yes,No',
+                                'agriculture.land_water_source' => 'nullable|in:Well,Tube Well,Canal,River,Borewell,Other',
+                                'image' => 'nullable|image|max:2048',
+                                'video_link' => 'nullable|url',
+                            ]);
                 break;
             case 8:
-                $this->validate([
-                    'industrial.land_type' => 'required|string',
-                ]);
+                $this->industrialData = $this->validate([
+                                'industrial.land_type' => 'required|string',
+                                'industrial.land_area_size' => 'required|string',
+                                'industrial.land_area_units' => 'required|in:Feet,Meters,Yards,Marla,Kanal,Kila,Bigha,Acre',
+                                'industrial.land_facing' => 'nullable|in:North,North-East,North-West,South,South-East,South-West,East,West,N/A',
+                                'industrial.land_zone' => 'nullable|in:Industrial,Commercial,Mixed Use',
+                                'industrial.land_access_road' => 'nullable|in:Yes,No',
+                                'industrial.land_power_supply' => 'nullable|in:Yes,No',
+                                'industrial.land_water_supply' => 'nullable|in:Yes,No',
+                                'industrial.land_sewage_system' => 'nullable|in:Yes,No',
+                                'industrial.land_boundary_wall' => 'nullable|in:Yes,No',
+                                'industrial.land_fencing' => 'nullable|in:Yes,No',
+                                'industrial.land_security' => 'nullable|in:Yes,No',
+                                'industrial.land_cctv' => 'nullable|in:Yes,No',
+                                'industrial.land_fire_safety' => 'nullable|in:Yes,No',
+                                'industrial.land_railway_access' => 'nullable|in:Yes,No',
+                                'industrial.advantage' => 'nullable|in:Corner,On Road,Park Facing,Normal',
+                                'image' => 'nullable|image|max:2048',
+                                'video_link' => 'nullable|url',
+                            ]);
                 break;
         }
     }

@@ -1,13 +1,11 @@
-
 <style>
     .plot-box {
-        border: 2px solid #198754 !important;  /* Solid green border */
+        border: 2px solid #198754 !important;
         border-radius: 20px !important;
         padding: 1.5rem;
         background-color: #ffffff;
         box-shadow: 0 0 8px rgba(0,0,0,0.05);
     }
-
 
     .custom-radio-btn {
         display: inline-flex;
@@ -34,14 +32,12 @@
     }
 </style>
 
-
 <div class="row g-4"
      x-data="{
         front: @entangle('plot.plot_front').defer,
         back: @entangle('plot.plot_back').defer,
         side1: @entangle('plot.plot_side_1').defer,
         side2: @entangle('plot.plot_side_2').defer,
-
         get area() {
             let f = parseFloat(this.front || 0);
             let b = parseFloat(this.back || 0);
@@ -55,53 +51,55 @@
     }"
      x-effect="$wire.set('plot.plot_size', parseFloat(area))">
 
-    <!-- Left Column: Plot Calculator -->
+    <!-- Section: Plot Area Calculator -->
     <div class="col-md-4">
         <div class="plot-box">
-            <h5 class="fw-bold text-success mb-3">📏 Calculate Plot Area</h5>
-
-            <div class="mb-3">
-                <label class="form-label">Front (ft)</label>
-                <input type="number" step="0.01" x-model="front" class="form-control">
-                @error('plot.plot_front') <span class="text-danger small">{{ $message }}</span> @enderror
+            <div class="bg-light border-start border-4 border-success p-2 ps-3 mb-3 rounded">
+                <h6 class="fw-semibold text-success">📏 Calculate Plot Area</h6>
             </div>
 
-            <div class="mb-3">
-                <label class="form-label">Back (ft)</label>
-                <input type="number" step="0.01" x-model="back" class="form-control">
-                @error('plot.plot_back') <span class="text-danger small">{{ $message }}</span> @enderror
-            </div>
-
-            <div class="mb-3">
-                <label class="form-label">Left (ft)</label>
-                <input type="number" step="0.01" x-model="side1" class="form-control">
-                @error('plot.plot_side_1') <span class="text-danger small">{{ $message }}</span> @enderror
-            </div>
-
-            <div class="mb-3">
-                <label class="form-label">Right (ft)</label>
-                <input type="number" step="0.01" x-model="side2" class="form-control">
-                @error('plot.plot_side_2') <span class="text-danger small">{{ $message }}</span> @enderror
-            </div>
-
-            <div>
-                <label class="form-label fw-semibold">Total Area (sq. ft.)</label>
-                <input type="text" :value="area" class="form-control bg-light" readonly>
-                @error('plot.plot_size') <span class="text-danger small">{{ $message }}</span> @enderror
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <h6 class="fw-semibold text-primary">Front (ft)</h6>
+                    <input type="number" step="0.01" x-model="front" class="form-control">
+                    @error('plot.plot_front') <span class="text-danger small">{{ $message }}</span> @enderror
+                </div>
+                <div class="col-md-6">
+                    <h6 class="fw-semibold text-primary">Back (ft)</h6>
+                    <input type="number" step="0.01" x-model="back" class="form-control">
+                    @error('plot.plot_back') <span class="text-danger small">{{ $message }}</span> @enderror
+                </div>
+                <div class="col-md-6">
+                    <h6 class="fw-semibold text-primary">Left (ft)</h6>
+                    <input type="number" step="0.01" x-model="side1" class="form-control">
+                    @error('plot.plot_side_1') <span class="text-danger small">{{ $message }}</span> @enderror
+                </div>
+                <div class="col-md-6">
+                    <h6 class="fw-semibold text-primary">Right (ft)</h6>
+                    <input type="number" step="0.01" x-model="side2" class="form-control">
+                    @error('plot.plot_side_2') <span class="text-danger small">{{ $message }}</span> @enderror
+                </div>
+                <div class="col-md-12">
+                    <h6 class="fw-semibold text-primary">Total Area (sq. ft.)</h6>
+                    <input type="text" :value="area" class="form-control bg-light" readonly>
+                    @error('plot.plot_size') <span class="text-danger small">{{ $message }}</span> @enderror
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Middle Column: Other Fields -->
+    <!-- Section: Plot Classification -->
     <div class="col-md-4">
-        <h5 class="fw-bold text-primary mb-3">🏷️ Plot Classification</h5>
+        <div class="bg-light border-start border-4 border-primary p-2 ps-3 mb-3 rounded">
+            <h6 class="fw-semibold text-primary">🏷️ Plot Classification</h6>
+        </div>
 
         <div class="mb-3">
-            <label class="form-label">Use As</label>
-            <div class="d-flex flex-wrap gap-2">
+            <h6 class="fw-semibold text-primary">Use As</h6>
+            <div class="d-grid gap-2" style="grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); display: grid;">
                 @foreach(['Residential', 'Commercial', 'Industrial', 'Mix'] as $option)
                     <label class="custom-radio-btn">
-                        <input type="radio" wire:model.defer="plot.use_as" value="{{ $option }}">
+                        <input type="radio" wire:model="plot.use_as" value="{{ $option }}">
                         <span>{{ $option }}</span>
                     </label>
                 @endforeach
@@ -110,54 +108,64 @@
         </div>
 
         <div class="mb-3">
-            <label class="form-label">Advantage</label>
-            <div class="d-flex flex-wrap gap-2">
+            <h6 class="fw-semibold text-primary">Advantage</h6>
+            <div class="d-grid gap-2" style="grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); display: grid;">
                 @foreach(['Corner', 'On Road', 'Park Facing', 'Normal'] as $option)
                     <label class="custom-radio-btn">
-                        <input type="radio" wire:model="advantage" value="{{ $option }}">
+                        <input type="radio" wire:model="plot.advantage" value="{{ $option }}">
                         <span>{{ $option }}</span>
                     </label>
                 @endforeach
             </div>
-            @error('advantage') <span class="text-danger small">{{ $message }}</span> @enderror
+            @error('plot.advantage') <span class="text-danger small">{{ $message }}</span> @enderror
         </div>
     </div>
 
-    
-    <!-- Right Column: Upload Image -->
-        <!-- Facing -->
-    <div class="col-md-6">
-        <label class="form-label fw-semibold">Land Facing</label>
-        <select wire:model.defer="agriculture.land_facing" class="form-select">
-            <option value="N/A">-- Select --</option>
-            <option value="North">North</option>
-            <option value="North-East">North-East</option>
-            <option value="North-West">North-West</option>
-            <option value="South">South</option>
-            <option value="South-East">South-East</option>
-            <option value="South-West">South-West</option>
-            <option value="East">East</option>
-            <option value="West">West</option>
-        </select>
-        @error('agriculture.land_facing') <span class="text-danger small">{{ $message }}</span> @enderror
-    </div>
+    <!-- Section: Land Facing and Media -->
     <div class="col-md-4">
-        <h5 class="fw-bold text-primary mb-3">🖼️ Upload Property Image</h5>
+        <div class="bg-light border-start border-4 border-secondary p-2 ps-3 mb-3 rounded">
+            <h6 class="fw-semibold text-secondary">📍 Plot Facing & Media</h6>
+        </div>
 
-        <input type="file" wire:model="image" class="form-control">
-        @error('image') <span class="text-danger small">{{ $message }}</span> @enderror
+        <div class="mb-3">
+            <h6 class="fw-semibold text-primary">Plot Facing</h6>
+            <select wire:model="plot.plot_facing" class="form-select">
+                <option value="N/A">-- Select --</option>
+                <option value="North">North</option>
+                <option value="North-East">North-East</option>
+                <option value="North-West">North-West</option>
+                <option value="South">South</option>
+                <option value="South-East">South-East</option>
+                <option value="South-West">South-West</option>
+                <option value="East">East</option>
+                <option value="West">West</option>
+            </select>
+            @error('plot.plot_facing') <span class="text-danger small">{{ $message }}</span> @enderror
+        </div>
 
-        <div wire:loading wire:target="image" class="text-muted small mt-2">Uploading...</div>
+        <div class="mb-3">
+            <h6 class="fw-semibold text-primary">YouTube Video Link (Optional)</h6>
+            <input type="url" wire:model="plot.video_link" class="form-control" placeholder="e.g. https://youtu.be/xyz123">
+            @error('plot.video_link') <span class="text-danger small">{{ $message }}</span> @enderror
 
-        @if ($image)
-            <div class="mt-3 border rounded p-2">
-                <img src="{{ $image->temporaryUrl() }}" class="img-fluid rounded" style="max-height: 280px;">
-            </div>
-        @endif
-    </div>
-    <div class="col-md-12">
-        <h6 class="fw-semibold text-primary">Add YouTube Video (Optional)</h6>
-        <input type="url" wire:model.defer="video_link" class="form-control" placeholder="e.g. https://youtu.be/xyz123">
-        @error('video_link') <span class="text-danger small">{{ $message }}</span> @enderror
+            @if(Str::contains($video_link, 'youtu'))
+                <div class="mt-3">
+                    <iframe width="100%" height="280" src="{{ Str::replace('youtu.be/', 'www.youtube.com/embed/', $video_link) }}" frameborder="0" allowfullscreen></iframe>
+                </div>
+            @endif
+        </div>
+
+        <div class="mb-3">
+            <h6 class="fw-semibold text-primary">Upload Property Image</h6>
+            <input type="file" wire:model="image" class="form-control">
+            @error('plot.image') <span class="text-danger small">{{ $message }}</span> @enderror
+            <div wire:loading wire:target="plot.image" class="text-muted small mt-2">Uploading...</div>
+            @if ($image)
+                <div class="mt-3 border rounded p-2">
+                    <img src="{{ $image->temporaryUrl() }}" class="img-fluid rounded" style="max-height: 280px;">
+                </div>
+            @endif
+        </div>
+
     </div>
 </div>

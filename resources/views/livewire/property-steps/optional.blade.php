@@ -18,32 +18,7 @@
             <input type="text" wire:model.defer="transport_distance" class="form-control" placeholder="e.g. 1.8 km">
         </div>
 
-        <!-- Bedrooms, Bathrooms, etc -->
-        <div class="col-md-3">
-            <h6 class="fw-semibold text-primary">No. of Bedrooms</h6>
-            <input type="number" wire:model.defer="bedrooms" class="form-control" min="0">
-        </div>
-        <div class="col-md-3">
-            <h6 class="fw-semibold text-primary">No. of Bathrooms</h6>
-            <input type="number" wire:model.defer="bathrooms" class="form-control" min="0">
-        </div>
-        <div class="col-md-3">
-            <h6 class="fw-semibold text-primary">No. of Balconies</h6>
-            <input type="number" wire:model.defer="balconies" class="form-control" min="0">
-        </div>
-        <div class="col-md-3">
-            <h6 class="fw-semibold text-primary">Total Floors</h6>
-            <input type="number" wire:model.defer="total_floors" class="form-control" min="0">
-        </div>
-
         
-
-        <!-- Video Link -->
-        <div class="col-md-12">
-            <h6 class="fw-semibold text-primary">Add YouTube Video (Optional)</h6>
-            <input type="url" wire:model.defer="video_link" class="form-control" placeholder="e.g. https://youtu.be/xyz123">
-            @error('video_link') <span class="text-danger small">{{ $message }}</span> @enderror
-        </div>
 
         <!-- Court Case -->
         <div class="col-md-12">

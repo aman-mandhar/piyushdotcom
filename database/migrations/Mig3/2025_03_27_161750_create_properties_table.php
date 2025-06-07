@@ -32,12 +32,12 @@ return new class extends Migration
             ['name' => 'Plot', 'created_at' => now(), 'updated_at' => now()],
             ['name' => 'House', 'created_at' => now(), 'updated_at' => now()],
             ['name' => 'Apartment', 'created_at' => now(), 'updated_at' => now()],
-            ['name' => 'Flat', 'created_at' => now(), 'updated_at' => now()],
             ['name' => 'Villa', 'created_at' => now(), 'updated_at' => now()],
             ['name' => 'Office', 'created_at' => now(), 'updated_at' => now()],
             ['name' => 'Shop', 'created_at' => now(), 'updated_at' => now()],
             ['name' => 'Agriculture Land', 'created_at' => now(), 'updated_at' => now()],
             ['name' => 'Industrial Land', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Flat', 'created_at' => now(), 'updated_at' => now()],
         ]);
         if (!Schema::hasTable('plots')) {
             Schema::create('plots', function (Blueprint $table) {
@@ -51,6 +51,9 @@ return new class extends Migration
                 $table->enum('use_as', ['Residential', 'Commercial', 'Industrial', 'Mix'])->nullable();
                 $table->enum('advantage', ['Corner', 'On Road', 'Park Facing', 'Normal'])->nullable();
                 $table->string('image')->nullable(); // Thumbnail
+                $table->enum('plot_facing', ['North', 'North-East', 'North-West', 'South', 'South-East', 'South-West', 'East', 'West', 'N/A'])->nullable()->default('N/A');
+                // Youtube video link
+                $table->string('video_link')->nullable();
                 $table->timestamps();
             });
         }
