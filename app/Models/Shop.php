@@ -16,10 +16,21 @@ class Shop extends Model
         'shop_back',
         'shop_floor',
         'shop_facing',
+        'advantage',
+        'shop_security',
+        'shop_parking',
+        'shop_air_conditioned',
+        'shop_power_backup',
+        'shop_water_supply',
+        'shop_toilet',
+        'shop_storage',
+        'shop_cctv',
+        'shop_fire_safety',
+        'image',
     ];
 
     public function property()
     {
-        return $this->hasOne(Property::class);
+        return $this->hasOne(Property::class, 'shop_id');
     }
 }

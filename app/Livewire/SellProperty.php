@@ -9,31 +9,30 @@ use App\Models\{
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Livewire\Component;
-use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\Storage;
 use Livewire\WithFileUploads;
 
 class SellProperty extends Component
 {
+    use WithFileUploads;
+
     public $step = 1;
 
     // Step 1
     public $listing_type_id, $property_type_id;
 
-    // Step 2: Conditional fields (ALL property-type-specific)
+    // Step 2
     public $plot = [], $house = [], $apartment = [], $villa = [], $office = [], $shop = [],  $agriculture = [], $industrial = [];
-    // Step 3: Mandatory fields of properties
+
+    // Step 3
     public $property_title, $slug, $description, $owner_document_type, $current_status;
     public $property_address, $location, $price_in, $price, $city_id;
 
-    // Step 4: Optional fields
+    // Step 4
     public $latitude, $longitude, $hospital_distance, $railway_distance, $transport_distance;
     public $image, $bedrooms, $bathrooms, $balconies, $total_floors, $furnishing_status;
     public $video_link, $court_case = 'No', $court_case_details;
 
     public $property_id;
-
-    use WithFileUploads;
 
     public function render()
     {
@@ -42,6 +41,21 @@ class SellProperty extends Component
             'propertyTypes' => PropertyType::all(),
             'cities' => City::all(),
         ]);
+    }
+
+    public function updated($propertyName)
+    {
+        if ($propertyName === 'property_title') {
+            $this->slug = $this->generateUniqueSlug($this->property_title);
+        }
+
+        if (in_array($propertyName, ['plot.plot_front', 'plot.plot_back', 'plot.plot_side_1', 'plot.plot_side_2'])) {
+            $this->calculatePlotSize();
+        }
+
+        if (in_array($propertyName, ['shop.shop_front', 'shop.shop_back', 'shop.shop_side_1', 'shop.shop_side_2'])) {
+            $this->calculateShopArea();
+        }
     }
 
     public function getPercentProperty()
@@ -55,35 +69,12 @@ class SellProperty extends Component
         };
     }
 
-    public function updated($propertyName)
-    {
-        if ($propertyName === 'property_title') {
-            $this->slug = $this->generateUniqueSlug($this->property_title);
-        }
-
-        if (in_array($propertyName, [
-            'plot.plot_front', 'plot.plot_back', 'plot.plot_side_1', 'plot.plot_side_2'
-        ])) {
-            $this->calculatePlotSize();
-        }
-
-        if (in_array($propertyName, [
-            'shop.shop_front', 'shop.shop_back', 'shop.shop_side_1', 'shop.shop_side_2'
-        ])) {
-            $this->calculateShopArea();
-        }
-        
-    }
-
     public function generateUniqueSlug($title)
     {
         $slug = Str::slug($title);
-        $exists = Property::where('slug', $slug)->exists();
-
-        if ($exists) {
+        if (Property::where('slug', $slug)->exists()) {
             $slug .= '-' . rand(1000, 9999);
         }
-
         return $slug;
     }
 
@@ -115,11 +106,10 @@ class SellProperty extends Component
         }
     }
 
-    public $step1;
     public function nextStep()
     {
         if ($this->step === 1) {
-            $this->step1 = $this->validate([
+            $this->validate([
                 'listing_type_id' => 'required|exists:listing_types,id',
                 'property_type_id' => 'required|exists:property_types,id',
             ]);
@@ -132,80 +122,43 @@ class SellProperty extends Component
         if ($this->step === 3) {
             $this->validate([
                 'property_title' => 'required|string|max:255',
-                'owner_document_type' => 'required',
-                'current_status' => 'required',
+                'description' => 'nullable|string',
+                'owner_document_type' => 'required|string',
+                'current_status' => 'required|string',
                 'property_address' => 'required|string',
                 'location' => 'required|string',
-                'price_in' => 'required',
-                'price' => 'required|numeric|min:0',
                 'city_id' => 'required|exists:cities,id',
+                'latitude' => 'nullable|numeric',
+                'longitude' => 'nullable|numeric',
+                'price_in' => 'required|string',
+                'price' => 'required|numeric|min:0',
             ]);
 
-            $foreignKeyColumn = null;
-            $foreignKeyId = null;
-
-            // Save appropriate property-type-specific record
-            switch ($this->property_type_id) {
-                case 1:
-                    $foreignKeyColumn = 'plot_id';
-                    $foreignKeyId = Plot::create($this->plot)->id;
-                    break;
-                case 2:
-                    $foreignKeyColumn = 'house_id';
-                    $foreignKeyId = House::create($this->house)->id;
-                    break;
-                case 3:
-                    $foreignKeyColumn = 'apartment_id';
-                    $foreignKeyId = Apartment::create($this->apartment)->id;
-                    break;
-                case 4:
-                    $foreignKeyColumn = 'villa_id';
-                    $foreignKeyId = Villa::create($this->villa)->id;
-                    break;
-                case 5:
-                    $foreignKeyColumn = 'office_id';
-                    $foreignKeyId = Office::create($this->office)->id;
-                    break;
-                case 6:
-                    $foreignKeyColumn = 'shop_id';
-                    $foreignKeyId = Shop::create($this->shop)->id;
-                    break;
-                case 7:
-                    $foreignKeyColumn = 'agriculture_land_id';
-                    $foreignKeyId = AgricultureLand::create($this->agriculture)->id;
-                    break;
-                case 8:
-                    $foreignKeyColumn = 'industrial_land_id';
-                    $foreignKeyId = IndustrialLand::create($this->industrial)->id;
-                    break;
-            }
-
-            $imagePath = $this->image ? $this->image->store('properties', 'public') : null;
             if ($this->latitude === null || $this->longitude === null) {
                 $city = City::find($this->city_id);
-                if ($city) {
-                    $this->latitude = $city->city_latitude ?? 0.0; // Default value if not provided
-                    $this->longitude = $city->city_longitude ?? 0.0; // Default value if not provided
-                }
+                $this->latitude = $city->city_latitude ?? 0.0;
+                $this->longitude = $city->city_longitude ?? 0.0;
             }
 
-            // Create main property
+            $data = $this->getPropertyTypeModelAndId();
+
             $property = Property::create([
                 'property_title' => $this->property_title,
-                'slug' => Str::slug($this->property_title . '-' . uniqid()),
+                'slug' => $this->generateUniqueSlug($this->property_title),
                 'description' => $this->description,
                 'owner_document_type' => $this->owner_document_type,
                 'current_status' => $this->current_status,
                 'property_address' => $this->property_address,
                 'location' => $this->location,
+                'city_id' => $this->city_id,
+                'latitude' => $this->latitude,
+                'longitude' => $this->longitude,
                 'price_in' => $this->price_in,
                 'price' => $this->price,
-                'city_id' => $this->city_id,
                 'user_id' => Auth::id(),
                 'listing_type_id' => $this->listing_type_id,
                 'property_type_id' => $this->property_type_id,
-                'image' => $imagePath,
-                $foreignKeyColumn => $foreignKeyId,
+                $data['column'] => $data['id'],
             ]);
 
             $this->property_id = $property->id;
@@ -219,8 +172,6 @@ class SellProperty extends Component
         $property = Property::findOrFail($this->property_id);
 
         $property->update([
-            'latitude' => $this->latitude,
-            'longitude' => $this->longitude,
             'hospital_distance' => $this->hospital_distance,
             'railway_distance' => $this->railway_distance,
             'transport_distance' => $this->transport_distance,
@@ -234,37 +185,61 @@ class SellProperty extends Component
             'court_case_details' => $this->court_case_details,
         ]);
 
-        session()->flash('success', 'Property Created & Updated Successfully!');
+        session()->flash('success', 'Property created and updated successfully!');
         return redirect()->route('dashboard');
     }
 
-    public $plotData,
-        $houseData,
-        $apartmentData,
-        $villaData,
-        $officeData,
-        $shopData,
-        $agricultureData,
-        $industrialData;
+    protected function getPropertyTypeModelAndId()
+    {
+        $map = [
+            1 => ['model' => Plot::class, 'data' => $this->plot, 'column' => 'plot_id'],
+            2 => ['model' => House::class, 'data' => $this->house, 'column' => 'house_id'],
+            3 => ['model' => Apartment::class, 'data' => $this->apartment, 'column' => 'apartment_id'],
+            4 => ['model' => Villa::class, 'data' => $this->villa, 'column' => 'villa_id'],
+            5 => ['model' => Office::class, 'data' => $this->office, 'column' => 'office_id'],
+            6 => ['model' => Shop::class, 'data' => $this->shop, 'column' => 'shop_id'],
+            7 => ['model' => AgricultureLand::class, 'data' => $this->agriculture, 'column' => 'agriculture_land_id'],
+            8 => ['model' => IndustrialLand::class, 'data' => $this->industrial, 'column' => 'industrial_land_id'],
+        ];
+
+        $entry = $map[$this->property_type_id];
+        $record = $entry['model']::create($entry['data']);
+
+        return ['id' => $record->id, 'column' => $entry['column']];
+    }
+
+    protected function savePropertyTypeData()
+    {
+        return $this->getPropertyTypeModelAndId();
+    }
+
     protected function validatePropertyTypeFields()
     {
         switch ($this->property_type_id) {
             case 1:
-                $this->plotData = $this->validate([
-                                'plot.plot_front' => 'nullable|numeric',
-                                'plot.plot_back' => 'nullable|numeric',
-                                'plot.plot_side_1' => 'nullable|numeric',
-                                'plot.plot_side_2' => 'nullable|numeric',
-                                'plot.plot_size' => 'required|numeric',
-                                'plot.use_as' => 'required|string',
-                                'plot.advantage' => 'nullable|string',
-                                'plot.image' => 'nullable|image|max:2048',
-                                'plot.plot_facing' => 'required|string',
-                                'plot.video_link' => 'nullable|url',
-                            ]);
-                break;
+                $validated = $this->validate([
+                                    'plot.plot_front' => 'nullable|numeric',
+                                    'plot.plot_back' => 'nullable|numeric',
+                                    'plot.plot_side_1' => 'nullable|numeric',
+                                    'plot.plot_side_2' => 'nullable|numeric',
+                                    'plot.plot_size' => 'required|numeric',
+                                    'plot.use_as' => 'required|string',
+                                    'plot.advantage' => 'nullable|string',
+                                    'plot.plot_facing' => 'required|string',
+                                    'plot.video_link' => 'nullable|url',
+                                ]);
+
+                $plotData = $validated['plot'];
+
+                    if ($this->image) {
+                        $this->validate(['image' => 'image|max:2048']);
+                        $plotData['image'] = $this->image->store('properties', 'public');
+                    }
+
+                $this->plot = $plotData;
+            break;
             case 2:
-                $this->houseData = $this->validate([
+                $validated = $this->validate([
                                 'house.house_type' => 'required|string',
                                 'house.house_area_units' => 'required|in:Sq. Feet,Sq. Meters,Sq. Yards,Marla,Kanal',
                                 'house.house_area_size' => 'required|string',
@@ -277,12 +252,18 @@ class SellProperty extends Component
                                 'house.house_facing' => 'nullable|in:North,North-East,North-West,South,South-East,South-West,East,West,N/A',
                                 'house.house_furnishing_status' => 'nullable|in:Furnished,Semi-Furnished,Unfurnished',
                                 'house.advantage' => 'nullable|in:Corner,On Road,Park Facing,Normal',
-                                'image' => 'nullable|image|max:2048',
                                 'video_link' => 'nullable|url',
                             ]);
-                break;
+                $houseData = $validated['house'];
+                if ($this->image) {
+                    $this->validate(['image' => 'image|max:2048']);
+                    $houseData['image'] = $this->image->store('properties', 'public');
+                }                
+                $this->house = $houseData;
+                dd($this->house);
+            break;
             case 3:
-                $this->apartmentData = $this->validate([
+                $validated = $this->validate([
                                 'apartment.apartment_type' => 'required|string',
                                 'apartment.apartment_area_size' => 'required|string',
                                 'apartment.apartment_area_units' => 'required|in:Sq. Feet,Sq. Meters,Sq. Yards,Marla,Kanal',
@@ -309,12 +290,17 @@ class SellProperty extends Component
                                 'apartment.apartment_fire_safety' => 'nullable|in:Yes,No',
                                 'apartment.apartment_cctv' => 'nullable|in:Yes,No',
                                 'apartment.apartment_intercom' => 'nullable|in:Yes,No',
-                                'image' => 'nullable|image|max:2048',
                                 'video_link' => 'nullable|url',
                             ]);
+                $apartmentData = $validated['apartment'];
+                if ($this->image) {
+                    $this->validate(['image' => 'image|max:2048']);
+                    $apartmentData['image'] = $this->image->store('properties', 'public');
+                }                
+                $this->apartment = $apartmentData;
                 break;
             case 4:
-                 $this->villaData = $this->validate([
+                 $validated = $this->validate([
                                 'villa.villa_type' => 'required|string',
                                 'villa.villa_area_size' => 'required|string',
                                 'villa.villa_area_units' => 'required|in:Sq. Feet,Sq. Meters,Sq. Yards,Marla,Kanal',
@@ -328,12 +314,17 @@ class SellProperty extends Component
                                 'villa.villa_garden' => 'nullable|in:Yes,No',
                                 'villa.villa_parking' => 'nullable|in:Yes,No',
                                 'villa.advantage' => 'nullable|in:Corner,On Road,Park Facing,Normal',
-                                'image' => 'nullable|image|max:2048',
                                 'video_link' => 'nullable|url',
                             ]);
+                $villaData = $validated['villa'];
+                if ($this->image) {
+                    $this->validate(['image' => 'image|max:2048']);
+                    $villaData['image'] = $this->image->store('properties', 'public');
+                }
+                $this->villa = $villaData;
                 break;
             case 5:
-                $this->officeData = $this->validate([
+                $validated = $this->validate([
                                 'office.office_type' => 'required|string',
                                 'office.office_area_size' => 'required|string',
                                 'office.office_area_units' => 'required|in:Sq. Feet,Sq. Meters,Sq. Yards',
@@ -352,12 +343,17 @@ class SellProperty extends Component
                                 'office.office_kitchen' => 'nullable|in:Yes,No',
                                 'office.office_toilet' => 'nullable|in:Yes,No',
                                 'office.office_storage' => 'nullable|in:Yes,No',
-                                'image' => 'nullable|image|max:2048',
                                 'video_link' => 'nullable|url',
                             ]);
+                $officeData = $validated['office'];
+                if ($this->image) {
+                    $this->validate(['image' => 'image|max:2048']);
+                    $officeData['image'] = $this->image->store('properties', 'public');
+                }
+                $this->office = $officeData;
                 break;
             case 6:
-                $this->shopData = $this->validate([
+                $validated = $this->validate([
                                 'shop.shop_type' => 'required|string',
                                 'shop.shop_area_size' => 'required|string',
                                 'shop.shop_area_units' => 'required|in:Sq. Feet,Sq. Meters,Sq. Yards',
@@ -377,11 +373,17 @@ class SellProperty extends Component
                                 'shop.shop_storage' => 'nullable|in:Yes,No',
                                 'shop.shop_cctv' => 'nullable|in:Yes,No',
                                 'shop.shop_fire_safety' => 'nullable|in:Yes,No',
-                                'image' => 'nullable|image|max:2048',
                                 'video_link' => 'nullable|url',
                             ]);
+                $shopData = $validated['shop'];
+                if ($this->image) {
+                    $this->validate(['image' => 'image|max:2048']);
+                    $shopData['image'] = $this->image->store('properties', 'public');
+                }
+                $this->shop = $shopData;
+                break;
             case 7:
-                $this->agricultureData = $this->validate([
+                $validated = $this->validate([
                                 'agriculture.land_type' => 'required|string',
                                 'agriculture.land_area_size' => 'required|string',
                                 'agriculture.land_area_units' => 'required|in:Feet,Meters,Yards,Marla,Kanal,Kila,Bigha,Acre',
@@ -394,12 +396,17 @@ class SellProperty extends Component
                                 'agriculture.land_access_road' => 'nullable|in:Yes,No',
                                 'agriculture.land_power_supply' => 'nullable|in:Yes,No',
                                 'agriculture.land_water_source' => 'nullable|in:Well,Tube Well,Canal,River,Borewell,Other',
-                                'image' => 'nullable|image|max:2048',
                                 'video_link' => 'nullable|url',
                             ]);
+                $agricultureData = $validated['agriculture'];
+                if ($this->image) {
+                    $this->validate(['image' => 'image|max:2048']);
+                    $agricultureData['image'] = $this->image->store('properties', 'public');
+                }
+                $this->agriculture = $agricultureData;
                 break;
             case 8:
-                $this->industrialData = $this->validate([
+                $validated = $this->validate([
                                 'industrial.land_type' => 'required|string',
                                 'industrial.land_area_size' => 'required|string',
                                 'industrial.land_area_units' => 'required|in:Feet,Meters,Yards,Marla,Kanal,Kila,Bigha,Acre',
@@ -416,10 +423,17 @@ class SellProperty extends Component
                                 'industrial.land_fire_safety' => 'nullable|in:Yes,No',
                                 'industrial.land_railway_access' => 'nullable|in:Yes,No',
                                 'industrial.advantage' => 'nullable|in:Corner,On Road,Park Facing,Normal',
-                                'image' => 'nullable|image|max:2048',
                                 'video_link' => 'nullable|url',
                             ]);
+                $industrialData = $validated['industrial'];
+
+                if ($this->image) {
+                    $this->validate(['image' => 'image|max:2048']);
+                    $industrialData['image'] = $this->image->store('properties', 'public');
+                }
+                $this->industrial = $industrialData;
                 break;
         }
     }
 }
+

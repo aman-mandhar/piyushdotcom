@@ -69,8 +69,8 @@
                         @endif
                     
                     </div>
-                    <a href="{{ route('properties.create') }}" class="btn btn-primary px-3 d-none d-lg-flex">Add Property</a>
-                    <a href="{{ route('properties.my-search') }}" class="btn btn-secondary px-3 d-none d-lg-flex">Search Property</a>
+                    <a href="{{ route('properties.create') }}" class="btn btn-primary px-3 d-none d-lg-flex">Sell Property</a>
+                    <a href="{{ route('properties.my-search') }}" class="btn btn-secondary px-3 d-none d-lg-flex">Buy Property</a>
                 </div>
             </nav>
         </div>

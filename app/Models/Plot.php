@@ -15,11 +15,12 @@ class Plot extends Model
         'plot_area_units',
         'advantage',
         'use_as',
+        'image',
     ];
 
     public function property()
     {
-        return $this->hasOne(Property::class);
+        return $this->hasOne(Property::class, 'plot_id');
     }
 }
 
