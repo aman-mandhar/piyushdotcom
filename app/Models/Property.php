@@ -111,4 +111,28 @@ class Property extends Model
     {
         return $this->belongsTo(IndustrialLand::class);
     }
+
+    public function getThumbnailAttribute()
+    {
+        switch ($this->property_type_id) {
+            case 1:
+                return $this->plot?->image;
+            case 2:
+                return $this->house?->image;
+            case 3:
+                return $this->apartment?->image;
+            case 4:
+                return $this->villa?->image;
+            case 5:
+                return $this->office?->image;
+            case 6:
+                return $this->shop?->image;
+            case 7:
+                return $this->agricultureLand?->image;
+            case 8:
+                return $this->industrialLand?->image;
+            default:
+                return null;
+        }
+    }
 }

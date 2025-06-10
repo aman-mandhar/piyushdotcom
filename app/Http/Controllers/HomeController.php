@@ -44,8 +44,23 @@ class HomeController extends Controller
             $default_latitude = $user->city->country_latitude; 
             $default_longitude = $user->city->country_longitude;
         }
-        $allProperties = Property::with('city')->where('status', 'active')->get();
-
+        $allProperties = Property::with('city')
+                    ->where('status', 'active')
+                    ->with('city',
+                            'user',
+                            'listingType',
+                            'propertyType',
+                            'plot',
+                            'apartment',
+                            'house',
+                            'villa',
+                            'office',
+                            'shop',
+                            'agricultureLand',
+                            'industrialLand',)
+                    ->latest()
+                    ->get();
+        
         
 
         return view('home', compact('properties', 'cities', 'user', 'default_latitude', 'default_longitude', 'allProperties'));

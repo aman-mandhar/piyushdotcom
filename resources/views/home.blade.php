@@ -143,9 +143,34 @@
                             @foreach($allProperties as $property)
                                 <div class="col-md-6 col-lg-4">
                                     <div class="card h-100 shadow-sm">
-                                        @if($property->image)
-                                            <img src="{{ asset('storage/' . $property->image) }}" class="card-img-top" alt="Image of {{ $property->title }}" style="height: 200px; object-fit: cover;">
-                                        @endif
+                                        @php
+                                            $image = null;
+
+                                            if ($type == 1 && $property->plot) {
+                                                $image = $property->plot->image;
+                                            } elseif ($type == 2 && $property->house) {
+                                                $image = $property->house->image;
+                                            } elseif ($type == 3 && $property->apartment) {
+                                                $image = $property->apartment->image;
+                                            } elseif ($type == 4 && $property->villa) {
+                                                $image = $property->villa->image;
+                                            } elseif ($type == 5 && $property->office) {
+                                                $image = $property->office->image;
+                                            } elseif ($type == 6 && $property->shop) {
+                                                $image = $property->shop->image;
+                                            } elseif ($type == 7 && $property->agricultureLand) {
+                                                $image = $property->agricultureLand->image;
+                                            } elseif ($type == 8 && $property->industrialLand) {
+                                                $image = $property->industrialLand->image;
+                                            }
+                                        @endphp
+
+                                            @if($property->thumbnail)
+                                                <img src="{{ asset('storage/' . $property->thumbnail) }}"
+                                                    alt="Image of {{ $property->title }}"
+                                                    class="card-img-top img-fluid"
+                                                    style="height: 200px; object-fit: cover;">
+                                            @endif
                                         <div class="card-body d-flex flex-column">
                                             <h5 class="card-title">{{ $property->property_title }}</h5>
                                             <p class="mb-1"><strong>Location:</strong> {{ $property->location }}, {{ $property->city->name }}</p>

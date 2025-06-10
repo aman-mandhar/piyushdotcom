@@ -1,3 +1,21 @@
+@push('scripts')
+<script>
+    function togglePassword(fieldId) {
+        const input = document.getElementById(fieldId);
+        const icon = document.getElementById(fieldId + '-icon');
+
+        if (input.type === "password") {
+            input.type = "text";
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+        } else {
+            input.type = "password";
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+        }
+    }
+</script>
+@endpush
 <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
@@ -17,9 +35,17 @@
             </div>
 
             <div class="mb-3">
-              <label>Password</label>
-              <input type="password" name="password" class="form-control" required>
+              <label for="password" class="form-label">{{ __('Password') }}</label>
+              <div class="input-group">
+                <input type="password" wire:model.lazy="password" id="password" name="password" class="form-control" required>
+                <button type="button" class="btn btn-outline-secondary" onclick="togglePassword('password')">
+                  <i class="fa fa-eye" id="password-icon"></i>
+                </button>
+              </div>
+                  @error('password') <span class="text-danger">{{ $message }}</span> @enderror
             </div>
+            
+            
           </div>
 
           <div class="modal-footer">

@@ -201,10 +201,9 @@ class SellProperty extends Component
             7 => ['model' => AgricultureLand::class, 'data' => $this->agriculture, 'column' => 'agriculture_land_id'],
             8 => ['model' => IndustrialLand::class, 'data' => $this->industrial, 'column' => 'industrial_land_id'],
         ];
-
         $entry = $map[$this->property_type_id];
         $record = $entry['model']::create($entry['data']);
-
+        
         return ['id' => $record->id, 'column' => $entry['column']];
     }
 
@@ -255,12 +254,12 @@ class SellProperty extends Component
                                 'video_link' => 'nullable|url',
                             ]);
                 $houseData = $validated['house'];
-                if ($this->image) {
-                    $this->validate(['image' => 'image|max:2048']);
-                    $houseData['image'] = $this->image->store('properties', 'public');
-                }                
+
+                    if ($this->image) {
+                        $this->validate(['image' => 'image|max:2048']);
+                        $houseData['image'] = $this->image->store('properties', 'public');
+                    }                
                 $this->house = $houseData;
-                dd($this->house);
             break;
             case 3:
                 $validated = $this->validate([
