@@ -42,11 +42,6 @@
     <link href="{{ asset('lib/animate/animate.min.css') }}" rel="stylesheet">
     <link href="{{ asset('lib/owlcarousel/assets/owl.carousel.min.css') }}" rel="stylesheet">
 
-    <!-- Main Styles -->
-    <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
-
-    @livewireStyles
     @yield('seo')
 
     <style>
@@ -57,10 +52,15 @@
             border-radius: 10px;
         }
         @media (max-width: 768px) {
-            #map { height: 400px; }
+            #map {
+                height: 400px;
+            }
         }
     </style>
     @stack('styles')
+@vite(['resources/css/app.css', 'resources/js/app.js'])
+@livewireStyles
+@stack('styles')
 </head>
 
 <body>
@@ -100,7 +100,7 @@
 <script src="{{ asset('js/main.js') }}"></script>
 
 <script src="https://www.google.com/recaptcha/api.js?render={{ config('services.recaptcha.key') }}"></script>
-<!-- <script defer src="//unpkg.com/alpinejs"></script> -->
+
 <!-- Leaflet + Plugins -->
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script src="https://unpkg.com/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
@@ -109,9 +109,8 @@
 <script src="https://unpkg.com/leaflet.locatecontrol/dist/L.Control.Locate.min.js"></script>
 <script src="https://unpkg.com/leaflet-gesture-handling/dist/leaflet-gesture-handling.min.js"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
-
 @livewireScripts
+<script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 @stack('scripts')
 </body>
 </html>

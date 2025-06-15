@@ -30,9 +30,24 @@ class PropertyController extends Controller
      */
     public function show(Property $property)
     {
-        $property = Property::with(['city', 'user'])->where('slug', $property->slug)->firstOrFail();
+        $property->load([
+            'city', 
+            'user', 
+            'listingType', 
+            'propertyType', 
+            'plot', 
+            'apartment', 
+            'house', 
+            'villa', 
+            'office', 
+            'shop', 
+            'agricultureLand', 
+            'industrialLand'
+        ]);
+
         return view('properties.show', compact('property'));
     }
+
 
     public function view(Property $property)
     {

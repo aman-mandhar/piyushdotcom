@@ -18,7 +18,7 @@ class SellProperty extends Component
     public $step = 1;
 
     // Step 1
-    public $listing_type_id, $property_type_id;
+    public $listing_type_id, $property_type_id, $listingTypes, $propertyTypes;
 
     // Step 2
     public $plot = [], $house = [], $apartment = [], $villa = [], $office = [], $shop = [],  $agriculture = [], $industrial = [];
@@ -34,29 +34,40 @@ class SellProperty extends Component
 
     public $property_id;
 
+    public function mount()
+    {
+        $this->listingTypes = ListingType::all();
+        $this->propertyTypes = PropertyType::all();
+    }
+    
     public function render()
     {
         return view('livewire.sell-property', [
-            'listingTypes' => ListingType::all(),
-            'propertyTypes' => PropertyType::all(),
             'cities' => City::all(),
         ]);
     }
 
-    public function updated($propertyName)
+
+    public function updated($field)
     {
-        if ($propertyName === 'property_title') {
+        if (in_array($field, ['listing_type_id', 'property_type_id'])) {
+            $this->$field = (int) $this->$field;
+        }
+
+
+        if ($field === 'property_title') {
             $this->slug = $this->generateUniqueSlug($this->property_title);
         }
 
-        if (in_array($propertyName, ['plot.plot_front', 'plot.plot_back', 'plot.plot_side_1', 'plot.plot_side_2'])) {
+        if (in_array($field, ['plot.plot_front', 'plot.plot_back', 'plot.plot_side_1', 'plot.plot_side_2'])) {
             $this->calculatePlotSize();
         }
 
-        if (in_array($propertyName, ['shop.shop_front', 'shop.shop_back', 'shop.shop_side_1', 'shop.shop_side_2'])) {
+        if (in_array($field, ['shop.shop_front', 'shop.shop_back', 'shop.shop_side_1', 'shop.shop_side_2'])) {
             $this->calculateShopArea();
         }
     }
+
 
     public function getPercentProperty()
     {
